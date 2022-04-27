@@ -1,0 +1,88 @@
+%include "io.inc"
+
+section .data
+    string: dw "Sou aluno da disciplina de software basico"
+    tamanho: equ $-string
+    
+section .bss
+invertida resw 1
+subString resw 1
+
+section .text
+global CMAIN
+CEXTERN system
+CMAIN:
+    mov ebp, esp; for correct debugging
+    mov ebp, esp; for correct debugging
+    
+    xor eax,eax
+    xor ecx,ecx
+    xor esi,esi
+    xor edi,edi
+    
+    mov esi,string
+    add esi,4 ;para ja começar em 'aluno'
+    mov edi,subString
+    mov ecx,19 ;tamanho de caracteres para a frase desejada
+    cld
+    
+    PASSO1:
+        ;lê cada bit de string e escreve em subString
+        lodsb 
+        stosb 
+        loop PASSO1 ;repete até ler e escrever a frase toda
+        
+        ;lê o primeiro bit da subString('a')e transforma em miúsculo
+        mov esi, subString
+        mov edi, subString
+        lodsb
+        sub eax, 0x20   ;transforma de minúsculo para maiúsculo
+        stosb
+        PRINT_STRING subString
+        NEWLINE
+        
+        mov esi,string ;string q vai ser lida
+        mov edi, invertida ;string q vai ser escrita
+        mov ecx,tamanho ;tamanho da string
+        cld
+        
+        
+    PASSO2: ;coloca todas as letras em minusculo
+        lodsb ;lê
+        or eax, 20h ;transforma em minúsculo
+        push eax ;insere
+        loop PASSO2 ;repete
+        
+        
+        mov ecx,tamanho
+        cld
+        mov ebx,0  ;começa com maiúsculo
+        
+    PASSO3:
+        pop eax 
+        cmp eax, ' ' ;se o bit for espaço, ja insere na string
+        je ESCREVE
+        
+        MAISUCULO:
+            ;se ebx não for igual a zero é minúsculo
+            cmp ebx,0
+            jne MINUSCULO
+            
+            ;se ebx for igual a zero 
+            mov ebx,1 ;o próximo é minúsculo
+            sub eax, 0x20 ;transforma a letra em maiúsculo
+            jmp ESCREVE
+            
+        MINUSCULO:
+            mov ebx,0 ;o próximo é maiúsculo
+            
+            ESCREVE:
+                stosb ;escreve o bit em invertida
+                
+                dec ecx ;decrementa ex
+                cmp ecx,0 ;enquanto ecx não for 0
+                jne PASSO3 ;chama PASSO3
+                
+    NEWLINE
+    PRINT_STRING invertida
+    ret

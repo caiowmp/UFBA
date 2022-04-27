@@ -1,0 +1,117 @@
+%include "io64.inc"
+
+section .data
+    array dd 45, 9, 4, 12, 10, 54, 6, 8, 13, 15
+    
+section .bss
+    ordenado resd 10
+      
+section .text
+global CMAIN
+CMAIN:
+    mov rbp, rsp; for correct debugging
+    mov ebp,esp
+    ;write your code here
+
+    
+    xor eax,eax
+    xor bx,bx
+    
+    mov eax,0
+    
+    vetor: ;preenche o array 'ordenado'
+        mov bx,[array + eax * 4]
+        mov word[ordenado + eax * 4],bx
+        
+        add eax,1
+        
+        cmp eax,10
+        jl vetor
+    
+    xor eax,eax
+    xor ebx,ebx
+    
+    xor cx,cx
+    xor dx,dx
+    
+    mov eax,0
+    mov ebx,1
+
+    ORDENACAO: ;ordenação do vetor
+        
+        cmp eax,9 ;se ja tiver ordenado o vetor todo
+        jnl FIM_ORDENACAO ;encerra a ordenação
+        
+        mov cx,[ordenado + eax * 4] ;posição à esquerda
+        mov dx,[ordenado + ebx * 4] ;posição à direita
+        
+        cmp dx,cx ;se dx for menor que cx
+        jl MENOR 
+        
+        jmp FIM_MENOR
+        
+        MENOR: ;troca
+        
+            XCHG[ordenado + eax * 4],dx 
+            XCHG[ordenado + ebx * 4],cx
+            
+        FIM_MENOR:
+        
+            cmp ebx,9 ;se ainda não tiver percorrido o vetor todo
+            jl FIM_SELECAO  
+            
+        SELECAO:
+        
+            add eax,1 ;passa para a proxima posição da esquerda
+            mov ebx,eax 
+            add ebx,1 ;posição direita começa do prox da esquerda
+            jmp ORDENACAO ;ordena a nova posição da esquerda
+    
+        FIM_SELECAO:
+        
+            add ebx,1 ;muda a posição da direita
+            jmp ORDENACAO ;compara de novo
+            
+    FIM_ORDENACAO:    
+    
+    
+    
+    ;média dos 5 maiores números
+    xor eax,eax
+    xor ax,ax
+    
+    ;somando os 5 últimos (e maiores) núemeros do array
+    add ax,[ordenado + 9 * 4]
+    add ax,[ordenado + 8 * 4]
+    add ax,[ordenado + 7 * 4]
+    add ax,[ordenado + 6 * 4]
+    add ax,[ordenado + 5 * 4]
+    
+    ;dividindo ax por  5
+    mov bh,5
+    div bh
+    
+    ;copia um registrador menor para um maior
+    movzx ax,al 
+    
+    ;dividindo al por 2
+    mov bh,2
+    div bh
+    
+    movzx rax,al ;registrador de 64bit
+    mov rbx,12 ;(n - 1)
+    
+    FATORIAL:
+        cmp rbx,1 ;se rbx for menor que 1
+        jl FIM_FATORIAL ;termina o fatorial
+        
+        mul rbx ;multiplica rax por rbx
+        sub rbx,1 ;decrementa o valor de rbx  
+ 
+        jmp FATORIAL
+        
+    FIM_FATORIAL:
+
+        PRINT_DEC 8, rax
+    
+    ret
