@@ -3,7 +3,7 @@ import Classes.*;
 
 import java.util.Date;
 
-class Doador extends Pessoa{
+public class Doador extends Pessoa{
 
   public Doador(String nome,String tipo,String cpf_cnpj,Date dataNascimento,String rua,String complemento,String bairro,Integer numero){
 

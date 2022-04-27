@@ -1,4 +1,5 @@
 package AplicacaoPrincipal;
+import Classes.*;
 
 class Emprestimo{
 

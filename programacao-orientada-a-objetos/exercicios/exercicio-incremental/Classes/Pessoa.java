@@ -3,7 +3,7 @@ package Classes;
 import java.util.Date;
 import java.util.Calendar;
 
-abstract class Pessoa{
+public abstract class Pessoa{
 
   protected String nome;
   protected String tipo;
