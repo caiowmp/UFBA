@@ -1,3 +1,5 @@
+package AplicacaoPrincipal;
+
 class Editora{
 
   private String nome;

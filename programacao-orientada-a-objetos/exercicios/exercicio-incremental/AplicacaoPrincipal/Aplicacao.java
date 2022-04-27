@@ -1,3 +1,4 @@
+package AplicacaoPrincipal;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -6,13 +7,13 @@ class Aplicacao{
 
   static Scanner ler = new Scanner(System.in);
   static int escolha;
-  private Doador doador;
+  private Pessoa doador;
 
-  public Aplicacao(Doador doador){
+  public Aplicacao(Pessoa doador){
     this.doador = doador;
   }
 
-  public static void menu(){
+  /*/public static void menu(){
     System.out.println("Escolha uma opção:\n");
     System.out.println("1 - Adicionar doação\n");
     System.out.println("2 - Remover doação\n");
@@ -75,8 +76,7 @@ class Aplicacao{
 
   public static void ListarDoacao(){
 
-    ArrayList<Doacao> doacoes = new ArrayList<Doacao>();
-    doacoes.add(new Doacao());
     
-  }
+    
+  }/*/
 }

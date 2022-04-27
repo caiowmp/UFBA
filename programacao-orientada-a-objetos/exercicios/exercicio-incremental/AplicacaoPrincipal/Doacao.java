@@ -1,3 +1,4 @@
+package AplicacaoPrincipal;
 class Doacao{
 
   private Doador doador;

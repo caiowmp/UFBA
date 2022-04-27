@@ -1,19 +1,21 @@
-import java.util.Calendar;
+package Classes;
+
 import java.util.Date;
+import java.util.Calendar;
 
-class Doador{
-  
-  private String nome;
-  private String tipo;
-  private String cpf_cnpj;
-  private Date dataNascimento = new Date();
-  private String rua;
-  private String complemento;
-  private String bairro;
-  private Integer numero;
-  private Integer idade;
+abstract class Pessoa{
 
-  public Doador(String nome,String tipo,String cpf_cnpj,Date dataNascimento,String rua,String complemento,String bairro,Integer numero){
+  protected String nome;
+  protected String tipo;
+  protected String cpf_cnpj;
+  protected Date dataNascimento = new Date();
+  protected String rua;
+  protected String complemento;
+  protected String bairro;
+  protected Integer numero;
+  protected Integer idade;
+
+  protected Pessoa(String nome,String tipo,String cpf_cnpj,Date dataNascimento,String rua,String complemento,String bairro,Integer numero){
     this.nome = nome;
     this.tipo = tipo;
     this.cpf_cnpj = cpf_cnpj;
@@ -88,23 +90,12 @@ class Doador{
     return numero;
   }
 
-  public void checkType() {
-		int age = this.getAge();
+  public String VerificaPessoa(){
 		
-		if(this.getTipo() == "Pessoa Física") {
-			if(age > 18) {
-				System.out.println("["+age+"] Doador maior de idade.");
-			}
-			else if(age < 18) {
-				System.out.println("["+age+"] Doador menor de idade.");
-			}
-		}
-		else {
-			System.out.println("Método inválido. O doador é uma pessoa jurídica");
-		}
+    return getTipo();
 	}
 	
-	public Integer getAge() {
+	public Integer getIdade() {
 		Calendar data_Nascimento = Calendar.getInstance();
 		Calendar dataAtual = Calendar.getInstance();
 
@@ -120,5 +111,4 @@ class Doador{
 
 		return idade;
 	}
-
 }

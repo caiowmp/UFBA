@@ -1,3 +1,5 @@
+package AplicacaoPrincipal;
+
 class Emprestimo{
 
   private Beneficiario beneficiario;
