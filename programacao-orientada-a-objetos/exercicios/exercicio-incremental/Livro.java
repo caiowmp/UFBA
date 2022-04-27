@@ -4,7 +4,6 @@ import java.util.Iterator;
 class Livro{
 
   private String titulo_livro;
-  //Cada livro pode agregar um ou vários autores.
   private ArrayList<Autor>autor;
   private Integer ano;
   private Integer edicao;
@@ -79,14 +78,3 @@ class Livro{
     return classifição_livro;
   }
 }
-
-/*/titulo_livro (nome do livro): tipo String
- autor: Tipo Autor
- ano: Tipo Integer
- edição: Tipo Integer
- editora: tipo Editora
- isbn: Tipo String
- classifição_livro: (por exemplo: Romance, Aventura, Terror): tipo String
-Obs: Cada livro pode agregar um tipo de classificação. Se apagar o tipo de classificação, os livros continuam
-existindo. 
-/*/

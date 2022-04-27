@@ -1,21 +1,27 @@
-class Doação{
+class Doacao{
 
   private Doador doador;
   private String tipo_doacao;
-  private String descrição_doacao;
+  private String descricao_doacao;
   private String estado_doacao;
   private Integer quantidade = 0;
   private boolean pode_ser_entregue;
   private String tamanho_doacao;
+  public static int codigo_doacao = 12345;
 
-  public Doação(Doador doador,String tipo_doacao,String descrição_doacao,String estado_doacao,Integer quantidade,boolean pode_ser_entregue){
+  public Doacao(){
+    
+  }
+
+  public Doacao(Doador doador,String tipo_doacao,String descricao_doacao,String estado_doacao,Integer quantidade,boolean pode_ser_entregue){
 
     this.doador = doador;
     this.tipo_doacao = tipo_doacao;
-    this.descrição_doacao = descrição_doacao;
+    this.descricao_doacao = descricao_doacao;
     this.estado_doacao = estado_doacao;
     this.quantidade = quantidade;
     this.pode_ser_entregue = pode_ser_entregue;
+    codigo_doacao+=127;
   }
 
   public void setDoador(Doador doador){
@@ -34,12 +40,12 @@ class Doação{
     return tipo_doacao;
   }
 
-  public void setDescriçãoDoacao(String descrição_doacao){
-    this.descrição_doacao = descrição_doacao;
+  public void setDescricaooDoacao(String descricao_doacao){
+    this.descricao_doacao = descricao_doacao;
   }
 
-  public String getDescriçãoDoacao(){
-    return descrição_doacao;
+  public String getDescricaoDoacao(){
+    return descricao_doacao;
   }
 
   public void setEstadoDoacao(String estado_doacao){

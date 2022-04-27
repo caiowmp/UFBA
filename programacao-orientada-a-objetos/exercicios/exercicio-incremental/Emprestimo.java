@@ -1,24 +1,24 @@
-class Empréstimo{
+class Emprestimo{
 
-  private Beneficiário beneficiário;
+  private Beneficiario beneficiario;
   private String tipo_emprestimo;
   private String descrição_emprestimo;
   private Integer quantidade;
 
-  public Empréstimo(Beneficiário beneficiário,String tipo_emprestimo,String descrição_emprestimo,Integer quantidade){
+  public Emprestimo(Beneficiario beneficiário,String tipo_emprestimo,String descrição_emprestimo,Integer quantidade){
 
-    this.beneficiário = beneficiário;
+    this.beneficiario = beneficiario;
     this.tipo_emprestimo = tipo_emprestimo;
     this.descrição_emprestimo = descrição_emprestimo;
     this.quantidade = quantidade;
   }
 
-  public Beneficiário getBeneficiário(){
-    return beneficiário;
+  public Beneficiario getbeneficiario(){
+    return beneficiario;
   }
 
-  public void setBeneficiário(Beneficiário beneficiário){
-    this.beneficiário = beneficiário;
+  public void setbeneficiario(Beneficiario beneficiario){
+    this.beneficiario = beneficiario;
   }
 
   public String getTipoEmprestimo(){

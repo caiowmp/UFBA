@@ -1,7 +1,7 @@
 import java.util.Calendar;
 import java.util.Date;
 
-class Beneficiário{
+class Beneficiario{
   
   private String nome;
   private String tipo;
@@ -13,7 +13,7 @@ class Beneficiário{
   private Integer numero;
   private Integer idade;
 
-  public Beneficiário(String nome,String tipo,String cpf_cnpj,Date dataNascimento,String rua,String complemento,String bairro,Integer numero){
+  public Beneficiario(String nome,String tipo,String cpf_cnpj,Date dataNascimento,String rua,String complemento,String bairro,Integer numero){
     this.nome = nome;
     this.tipo = tipo;
     this.cpf_cnpj = cpf_cnpj;
