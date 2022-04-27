@@ -1,4 +1,4 @@
-## Um pouco do que fiz em minah tragetória pea faculdade
+## Um pouco do que fiz em minha trajetória pela faculdade
 
 Bacharelado em Ciência da Computação.
 
