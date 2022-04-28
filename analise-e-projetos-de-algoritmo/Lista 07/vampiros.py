@@ -24,7 +24,9 @@ while True:
         probabilidadeTotal == 100
     else: #probabilidade com moeda injusta
         if dano == 1:
-            probabilidadeTotal = (1-(probabilidadeDadoV2/probabilidadeDadoV1)**vidaVamp1)/(1-(probabilidadeDadoV2/probabilidadeDadoV1)**(vidaVamp1+vidaVamp2))
+            numerador = (1-(probabilidadeDadoV2/probabilidadeDadoV1)**vidaVamp1)
+            denominador = (1-(probabilidadeDadoV2/probabilidadeDadoV1)**(vidaVamp1+vidaVamp2))
+            probabilidadeTotal = numerador/denominador
         else:
             vidaVamp1 = vidaVamp1//dano
             if vidaVamp1 % dano != 0:
@@ -36,9 +38,12 @@ while True:
 
             dano = 1
 
-            probabilidadeTotal = (1-(probabilidadeDadoV2/probabilidadeDadoV1)**vidaVamp1)/(1-(probabilidadeDadoV2/probabilidadeDadoV1)**(vidaVamp1+vidaVamp2))
+            numerador = (1-(probabilidadeDadoV2/probabilidadeDadoV1)**vidaVamp1)
+            denominador = (1-(probabilidadeDadoV2/probabilidadeDadoV1)**(vidaVamp1+vidaVamp2))
 
-    print(f'{probabilidadeTotal*100:,.1f}')
+            probabilidadeTotal = numerador/denominador
+
+    print(round(probabilidadeTotal*100, 1))
 
     
 
