@@ -18,31 +18,25 @@ while True:
     #probabilidade com a moeda justa
     if probabilidadeDadoV1 == 50:
         probabilidadeTotal = vidaVamp1/(vidaVamp1+vidaVamp2)
+    elif probabilidadeDadoV1 == 0:
+        probabilidadeTotal = 0
+    elif probabilidadeDadoV1 == 100:
+        probabilidadeTotal == 100
     else: #probabilidade com moeda injusta
         if dano == 1:
-            numerador = (1-(probabilidadeDadoV1/probabilidadeDadoV2)**vidaVamp1)
-            denominador = (1-(probabilidadeDadoV1/probabilidadeDadoV2)**(vidaVamp1+vidaVamp2))
+            probabilidadeTotal = (1-(probabilidadeDadoV2/probabilidadeDadoV1)**vidaVamp1)/(1-(probabilidadeDadoV2/probabilidadeDadoV1)**(vidaVamp1+vidaVamp2))
         else:
+            hitsTomaveisVamp1 = 0
+            hitsTomaveisVamp2 = 0
 
-            numerador = (1-(probabilidadeDadoV1/probabilidadeDadoV2)**vidaVamp1)
-            denominador = (1-(probabilidadeDadoV1/probabilidadeDadoV2)**(vidaVamp1+vidaVamp2))
+            while vidaVamp1 > 0:
+              vidaVamp1-=dano
+              hitsTomaveisVamp1+=1
 
-        try:
-            probabilidadeTotal = numerador/denominador
-        except ZeroDivisionError:
-            probabilidadeTotal = 0
+            while vidaVamp2 > 0:
+              vidaVamp2-=dano
+              hitsTomaveisVamp2+=1
+
+            probabilidadeTotal = (1-(probabilidadeDadoV2/probabilidadeDadoV1)**hitsTomaveisVamp1)/(1-(probabilidadeDadoV2/probabilidadeDadoV1)**(hitsTomaveisVamp1+hitsTomaveisVamp2))
 
     print(round(probabilidadeTotal*100, 1))
-
-    
-
-#1 1 3 1
-#1 2 1 1
-#8 5 3 1
-#7 5 2 4
-#0 0 0 0
-
-#50.0
-#3.2
-#61.5
-#20.0
