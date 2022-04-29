@@ -31,7 +31,7 @@ int main(void) {
 
     if(pid > 0) {    /* Processo pai*/
         int num[3],  /* Números que o processo pai lê*/
-              x[2];    /* Resultado da x1, recebido pelo filho*/
+              x[2];    /* Resultado da equação, recebido pelo filho*/
 
         /* Fechando o descritor LEITURA no primeiro pipe. */
         close(fd1[0]);
@@ -48,8 +48,8 @@ int main(void) {
                 turn=1; /* Passa para o próximo passo, que é o pai ler a soma do filho */
             }
 
-            if(turn==1){ /* Pai vai ler a soma */
-                read(fd2[0], &x, sizeof(x)); /* Pai leu o resultado da soma, e armazenou no inteiro 'soma' */
+            if(turn==1){ /* Pai vai ler as raizes */
+                read(fd2[0], &x, sizeof(x)); /* Pai leu o resultado das raizes e aramzenou no vetor x */
                 printf("x1: %d\n\n", x[0]);
                 printf("x2: %d\n\n", x[1]);
               
@@ -62,7 +62,7 @@ int main(void) {
 
     } else {
         int numeros[3],
-             x[2];
+             raizes[2];
 
         /* Fechando o descritor ESCRITA no primeiro pipe. */
         close(fd1[1]);
@@ -72,14 +72,21 @@ int main(void) {
         while(1){
             if(turn==0){ /* Filho vai ler o vetor de numeros do pai */
                 read(fd1[0], numeros, sizeof(numeros) ); /* Recebeu o vetor de inteiros do pai e colocou no vetor 'numeros' */
-                turn=1;  /* Passa para o próximo passo, que é o filho somar e escrever o resultado da soma */
+                turn=1;  /* Passa para o próximo passo, que é o filho calcular as raizes e escrever */
             }else
 
-            if(turn==1){ /* Filho calcula a soma e retorna pro pai */
-                x[0] = (-numeros[1] + sqrtf((numeros[1]*numeros[1]) - 4 * numeros[0] * numeros[2]))/2*numeros[0];
-                x[1] = (-numeros[1] - sqrtf((numeros[1]*numeros[1]) - 4 * numeros[0] * numeros[2]))/2*numeros[0];
+            if(turn==1){ /* Filho calcula as raíze e retorna pro pai */
+              float bNeg = 0 - numeros[1];
+              float bquad = numeros[1] * numeros[1];
+              float ac4 = 4*numeros[0] * numeros[2];
+              float delta = bquad - ac4;
+              float sqrdelta = sqrt(delta);
+              float a2 = 2*numeros[0];
+              
+                raizes[0] = (bNeg + sqrdelta)/a2;
+                raizes[1] = (bNeg - sqrdelta)/a2;
 
-                write(fd2[1], &x, sizeof(x)); /* Envia a soma, qúe está na variável 'soma', para o pai */
+                write(fd2[1], &raizes, sizeof(raizes)); /* Envia a soma, qúe está na variável 'soma', para o pai */
                 turn=0; /* Volta para o passo anterior, que é esperar vetor de inteiros do pai */
             }
         }
