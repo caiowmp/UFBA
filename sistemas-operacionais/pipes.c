@@ -46,12 +46,14 @@ int main(void) {
 
                 write(fd1[1], num, sizeof(num)); /* Enviando o vetor de números pro filho */
                 turn=1; /* Passa para o próximo passo, que é o pai ler a soma do filho */
-            }
-
-            if(turn==1){ /* Pai vai ler as raizes */
+            }else if(turn==1){ /* Pai vai ler as raizes */
                 read(fd2[0], &x, sizeof(x)); /* Pai leu o resultado das raizes e aramzenou no vetor x */
-                printf("x1: %d\n\n", x[0]);
-                printf("x2: %d\n\n", x[1]);
+                if(x[0] == 0 && x[1] == 0){
+                  printf("Delta negativo\n\n");
+                }else{
+                  printf("x1: %d\n", x[0]);
+                  printf("x2: %d\n\n", x[1]);
+                }
               
                 turn=0;  /* Retorna pro passo anterior, pra começar tudo de novo */
             }
@@ -73,9 +75,7 @@ int main(void) {
             if(turn==0){ /* Filho vai ler o vetor de numeros do pai */
                 read(fd1[0], numeros, sizeof(numeros) ); /* Recebeu o vetor de inteiros do pai e colocou no vetor 'numeros' */
                 turn=1;  /* Passa para o próximo passo, que é o filho calcular as raizes e escrever */
-            }else
-
-            if(turn==1){ /* Filho calcula as raíze e retorna pro pai */
+            }else if(turn==1){ /* Filho calcula as raíze e retorna pro pai */
               float bNeg = 0 - numeros[1];
               float bquad = numeros[1] * numeros[1];
               float ac4 = 4*numeros[0] * numeros[2];
@@ -83,8 +83,13 @@ int main(void) {
               float sqrdelta = sqrt(delta);
               float a2 = 2*numeros[0];
               
-                raizes[0] = (bNeg + sqrdelta)/a2;
-                raizes[1] = (bNeg - sqrdelta)/a2;
+                if (delta < 9){
+                    raizes[0] = 0;
+                    raizes[1] = 0;
+                }else{
+                    raizes[0] = (bNeg + sqrdelta)/a2;
+                    raizes[1] = (bNeg - sqrdelta)/a2;
+                }
 
                 write(fd2[1], &raizes, sizeof(raizes)); /* Envia a soma, qúe está na variável 'soma', para o pai */
                 turn=0; /* Volta para o passo anterior, que é esperar vetor de inteiros do pai */
