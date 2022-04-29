@@ -1,129 +1,92 @@
-#include <sys/sem.h>
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 #include <math.h>
-#include <sys/types.h>
 
-int main(int argc, char *argv[])
-{
-	int fd_1[2], fd_2[2], fd_3[2], fd_4[2], fd_5[2];
-	pid_t son1, son2, son3, son4;
-	
-	pipe(fd_1);
-	pipe(fd_2);
-	pipe(fd_3);
+int main(void) {
+    int fd1[2], /* Pai vai escrever e Filho ler por esse file descriptor */
+         fd2[2], /* Pai vai ler e o Filho escrever por esse file descriptor */
+         turn=0; /* Vai definir o que cada um vai fazer (ler, escrever, aguardar...) */
+    pid_t pid;   /* Armazena o pid, para o tratamento de pai e filho */
 
-	//Cria o primeiro processo
-	if(son1 = fork() == -1)
-	{
-		perror("fork");
-		exit(1);
-	}
+    /* Cria o pipe 1 */
+    if(pipe(fd1)<0) {
+        perror("pipe") ;
+        return -1 ;
+    }
+    /* Cria o pipe 2 */
+    if(pipe(fd2)<0) {
+        perror("pipe") ;
+        return -1 ;
+    }
 
-	//Lê o valor de a
-	if(son1 == 0)
-	{
-		float a;
-		
-		printf("Processo %d \n",getpid());
-		printf("Digite o valor de 'a' da equação\n");
-		//lê o valor de A
-		scanf("%f",a);
-		//fecha a parte de leitura
-		close(fd_1[0]);
-		//escreve a no pipe fd_1
-		write(fd_1[1], &a,(sizeof(float)));
-		
-		exit(0);
-	}
+    /* Cria processo filho. */
+    pid = fork();
 
-	//Cria o segundo processo
-	if(son2 = fork() == -1)
-	{
-		perror("fork");
-		exit(1);
-	}
+    if(pid == -1) {
+        perror("fork") ;
+        return -1 ;
+    }
 
-	//Lê o valor de b
-	if(son2 == 0)
-	{
-		float b;
-	
-		printf("Processo %d \n",getpid());
-		printf("Digite o valor de 'b' da equação\n");
-		//lê o valor de B
-		scanf("%f",b);
-		//fecha a parte de leitura
-		close(fd_2[0]);
-		//escreve b no pipe fd_2
-		write(fd_2[1], &b,(sizeof(float)));
-		
-		exit(0);
-	}
+    if(pid > 0) {    /* Processo pai*/
+        int num[3],  /* Números que o processo pai lê*/
+              x[2];    /* Resultado da x1, recebido pelo filho*/
 
-	//Cria o terceiro processo
-	if(son3 = fork() == -1)
-	{
-		perror("fork");
-		exit(1);
-	}
+        /* Fechando o descritor LEITURA no primeiro pipe. */
+        close(fd1[0]);
+        /* Fechando o descritor ESCRITA no segundo pipe. */
+        close(fd2[1]);
 
-	//Lê o valor de c
-	if(son3 == 0)
-	{
-		float c;
-	
-		printf("Processo %d \n",getpid());
-		printf("Digite o valor de 'c' da equação\n");
-		//lê o valor de C
-		scanf("%f",c);
-		//fecha a parte de leitura
-		close(fd_3[0]);
-		//escreve c no pipe fd_3
-		write(fd_3[1], &c,(sizeof(float)));
-		
-		exit(0);
-	}
+        while(1)
+            if(turn==0){ /* Pai vai escreever */
+                printf("Insira o numero 'a': "); scanf("%d", &num[0]);
+                printf("Insira o numero 'b': "); scanf("%d", &num[1]);
+                printf("Insira o numero 'c': "); scanf("%d", &num[2]);
 
-	//Cria o quarto processo
-	if(son4 = fork() == -1)
-	{
-		perror("fork");
-		exit(1);
-	}
+                write(fd1[1], num, sizeof(num)); /* Enviando o vetor de números pro filho */
+                turn=1; /* Passa para o próximo passo, que é o pai ler a soma do filho */
+            }
 
-	//Calcula os valores de de x1 e x2 e imprime na tela
-	if(son4 == 0)
-	{
-		float a, b, c, x1, x2;
-		
-		printf("Processo %d\nCalculando as raízes da equação\n",getpid());
-		
-		//recebe a
-		//fecha a parte de escrita
-		close(fd_1[1]);
-		//lê o valor do buffer
-		read(fd_1[0], &a, (sizeof(float)));
-		
-		//recebe b
-		//fecha a parte de escrita
-		close(fd_2[1]);
-		//lê o valor do buffer
-		read(fd_2[0], &b, (sizeof(float)));
+            if(turn==1){ /* Pai vai ler a soma */
+                read(fd2[0], &x, sizeof(x)); /* Pai leu o resultado da soma, e armazenou no inteiro 'soma' */
+                printf("x1: %d\n\n", x[0]);
+                printf("x2: %d\n\n", x[1]);
+              
+                turn=0;  /* Retorna pro passo anterior, pra começar tudo de novo */
+            }
 
-		//recebe c
-		//fecha a parte de escrita
-		close(fd_3[1]);
-		//lê o valor do buffer
-		read(fd_3[0], &c, (sizeof(float)));
-		
-		printf("As raizes da equação são: x1 = %f e x2 = %f",x1, x2);
-		exit(0);
-	}
-	
-	return 0;
+
+        close(fd2[0]);
+        close(fd1[1]);
+
+    } else {
+        int numeros[3],
+             x[2];
+
+        /* Fechando o descritor ESCRITA no primeiro pipe. */
+        close(fd1[1]);
+        /* Fechando o descritor LEITURA no segundo pipe. */
+        close(fd2[0]);
+
+        while(1){
+            if(turn==0){ /* Filho vai ler o vetor de numeros do pai */
+                read(fd1[0], numeros, sizeof(numeros) ); /* Recebeu o vetor de inteiros do pai e colocou no vetor 'numeros' */
+                turn=1;  /* Passa para o próximo passo, que é o filho somar e escrever o resultado da soma */
+            }else
+
+            if(turn==1){ /* Filho calcula a soma e retorna pro pai */
+                x[0] = (-numeros[1] + sqrtf((numeros[1]*numeros[1]) - 4 * numeros[0] * numeros[2]))/2*numeros[0];
+                x[1] = (-numeros[1] - sqrtf((numeros[1]*numeros[1]) - 4 * numeros[0] * numeros[2]))/2*numeros[0];
+
+                write(fd2[1], &x, sizeof(x)); /* Envia a soma, qúe está na variável 'soma', para o pai */
+                turn=0; /* Volta para o passo anterior, que é esperar vetor de inteiros do pai */
+            }
+        }
+
+        close(fd2[1]);
+        close(fd1[0]);
+    }
+
+    return 0 ;
 }
-
-
