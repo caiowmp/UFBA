@@ -1,41 +1,33 @@
-while 1 != 0:
 
+def mochila(maxPizzasRob , pizzas , tempo , pedidos): 
+  
+    # Caso base
+    if pedidos == 0 or maxPizzasRob == 0 : 
+        return 0
+  
+    # Se maxPizzasRob for maior do que a cabacidade da mochila
+    # então esse item não pdoe ser incluído na solução ideal
+    if (pizzas[pedidos-1] > maxPizzasRob): 
+        return mochila(maxPizzasRob , pizzas , tempo , pedidos-1) 
+    else: 
+        return max(tempo[pedidos-1] + mochila(maxPizzasRob-pizzas[pedidos-1] , pizzas , tempo , pedidos-1), 
+                   mochila(maxPizzasRob , pizzas , tempo , pedidos-1)) 
+
+while True:
+    tempo = []
+    pizzas = []
     pedidos = int(input())
 
     if pedidos == 0:
         break
 
     maxPizzasRob = int(input())
-    pizzasRob = 0
-    tempRob = 0
-
-    pizzas = []
-    tempo = []
+    
+    #print(pedidos)
 
     for i in range(pedidos):
-        entrada = input().split()
-        tempo.append(int(entrada[0]))
-        pizzas.append(int(entrada[1]))
-
-    for i in range(len(pizzas)-1):
-        for j in range(i+1,len(pizzas)):
-            if tempo[j] > tempo[i]:
-                aux = pizzas[j]
-                pizzas[j] = pizzas[i]
-                pizzas[i] = aux
-                aux = tempo[j]
-                tempo[j] = tempo[i]
-                tempo[i] = aux
-
-    i = -1
-
-    while i < len(pizzas)-1:
-        if pizzasRob + pizzas[i+1] <= maxPizzasRob:
-            pizzasRob += pizzas[i+1]
-            tempRob += tempo[i+1]
-            print("pizzasRob:",pizzasRob)
-            print("tempRob:",tempRob)
-
-        i+=1
-
-    print(tempRob,"min.")
+        entrada = list(map(int, input().split()))
+        tempo.append(entrada[0])
+        pizzas.append(entrada[1])
+    
+    print('{} min.'.format(mochila(maxPizzasRob, pizzas, tempo, pedidos)))
