@@ -16,7 +16,7 @@ def fib_bottom_up(n):
 while casos != 0:
     numero_desejado = int(input())
 
-    res = fib_botom_up(numero_desejado)
+    res = fib_bottom_up(numero_desejado)
 
     print("fib(",numero_desejado,") = ",res,sep="")
 
