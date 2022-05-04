@@ -3,7 +3,7 @@
 casos = input()
 casos = int(casos)
 
-memo = {}
+memo = {0:0,1:1}
 
 def fib_bottom_up(n):
     memo[0] = memo[1] = 1
@@ -16,8 +16,10 @@ def fib_bottom_up(n):
 while casos != 0:
     numero_desejado = int(input())
 
-    res = fib_bottom_up(numero_desejado)
+    #res = fib_bottom_up(numero_desejado)
 
-    print("fib(",numero_desejado,") = ",res,sep="")
+    #print("fib(",numero_desejado,") = ",res,sep="")
+
+    print(fib_bottom_up(numero_desejado))
 
     casos = casos - 1
