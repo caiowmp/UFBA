@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-memo = {}
+memo = {0:1,1:1}
 def fib_top_down(n):
     if n in memo :
         return memo[n]
