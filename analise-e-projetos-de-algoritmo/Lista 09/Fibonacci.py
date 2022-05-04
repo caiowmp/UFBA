@@ -3,28 +3,22 @@
 casos = input()
 casos = int(casos)
 
+memo = {}
+
+def fib_botom_up(n):
+    memo[0] = memo[1] = 1
+
+    for i in range(2,n+1):
+        memo[i] = memo[i-1] + memo[i-2]
+
+    return memo[n]
+
 while casos != 0:
-    numero_desejado = input()
-    numero_desejado = int(numero_desejado)
+    numero_desejado = int(input())
 
-    ultimo = 1
-    penultimo = 1
-    total = 2
+    res = fib_botom_up(numero_desejado)
 
-    if(numero_desejado == 1) or (numero_desejado == 2):
-        print(1)
-    else:
-        contador = 3
-        while numero_desejado >= contador:
-            termo = ultimo + penultimo
-            penultimo = ultimo
-            ultimo = termo
-            contador = contador + 1
-            total += termo
-            print(total)
-
-        print("fib("+ str(numero_desejado) +") = " + str(total) + " calls = " + str(termo))
-
+    print("fib(",numero_desejado,") = ",res,sep="")
 
 
     casos = casos - 1
