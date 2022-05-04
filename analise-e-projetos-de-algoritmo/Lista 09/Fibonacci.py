@@ -5,7 +5,7 @@ casos = int(casos)
 
 memo = {}
 
-def fib_botom_up(n):
+def fib_bottom_up(n):
     memo[0] = memo[1] = 1
 
     for i in range(2,n+1):
@@ -19,6 +19,5 @@ while casos != 0:
     res = fib_botom_up(numero_desejado)
 
     print("fib(",numero_desejado,") = ",res,sep="")
-
 
     casos = casos - 1
