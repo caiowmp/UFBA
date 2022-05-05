@@ -1,3 +1,8 @@
+def print_table(table):
+    for linha in table:
+        print(linha)
+
+
 while 1 > 0:
     pedidos = int(input())
 
@@ -21,26 +26,28 @@ while 1 > 0:
     for i in range(pedidos+1):
         table.append(linhas)
 
+    print(pizzas)
+    print(tempo)
+
     #a linha e a coluna 0 são sempre 0.
     
     #começando o algoritmo (preenchendo a tabela)
     #for que percorre as colunas (capacidades)
-    for capacidade in range(1,capacidadeMochila):
-
+    for pedido in range(1,pedidos+1):
         #for que percorre as linhas (pedidos)
-        for pedido in range(1,pedidos+1):
+        for capacidade in range(1,capacidadeMochila+1):
             #se a quantidade de pizzas do pedido em questão for menor ou igual a capacidade atual
             if pizzas[pedido] <= capacidade:
                 #insere na tabela, o valor máximo entre a o valor de cima e o valor da de cima na capacidade que restará mais o valor do pedido.
-                if table[pedidos-1][capacidade] > table[pedidos-1][capacidade-pizzas[pedido]] + tempo[pedido]:
-                    table[pedido][capacidade] = table[pedidos-1][capacidade]
+                if table[pedido-1][capacidade] > table[pedido-1][capacidade-pizzas[pedido]] + tempo[pedido]:
+                    table[pedido][capacidade] = table[pedido-1][capacidade]
                 else:
-                    table[pedido][capacidade] = table[pedidos-1][capacidade-pizzas[pedido]] + tempo[pedido]
+                    table[pedido][capacidade] = (table[pedido-1][capacidade-pizzas[pedido]] + tempo[pedido])
             #se não, copia o valor de cima
             else:
                 table[pedido][capacidade] = table[pedido-1][capacidade]
-
-        print(table)
+        
+        print_table(table)
 
     print(table[pedidos][capacidadeMochila]," min.")
     table.clear()
