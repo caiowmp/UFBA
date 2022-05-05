@@ -1,33 +1,50 @@
-
-def mochila(maxPizzasRob , pizzas , tempo , pedidos): 
-  
-    # Caso base
-    if pedidos == 0 or maxPizzasRob == 0 : 
-        return 0
-  
-    # Se maxPizzasRob for maior do que a cabacidade da mochila
-    # então esse item não pdoe ser incluído na solução ideal
-    if (pizzas[pedidos-1] > maxPizzasRob): 
-        return mochila(maxPizzasRob , pizzas , tempo , pedidos-1) 
-    else: 
-        return max(tempo[pedidos-1] + mochila(maxPizzasRob-pizzas[pedidos-1] , pizzas , tempo , pedidos-1), 
-                   mochila(maxPizzasRob , pizzas , tempo , pedidos-1)) 
-
-while True:
-    tempo = []
-    pizzas = []
+while 1 > 0:
+    #n
     pedidos = int(input())
 
     if pedidos == 0:
         break
 
-    maxPizzasRob = int(input())
-    
-    #print(pedidos)
+    #c
+    capacidadeMochila = int(input())
+    tempo = []
+    pizzas = []
+
+    #cria tabela
+    table = []
+
+    linha = [0] * 30
+
+    for i in range(20):
+        table.append(linha)
 
     for i in range(pedidos):
-        entrada = list(map(int, input().split()))
+        entrada = list(map(int,input().split()))
+        #valor
         tempo.append(entrada[0])
+        #peso
         pizzas.append(entrada[1])
     
-    print('{} min.'.format(mochila(maxPizzasRob, pizzas, tempo, pedidos)))
+    # i = b
+    for i in range(1,capacidadeMochila+1):
+        #zera a primeira linha
+        table[0][i] = 0
+
+        #j = i
+        for j in range(1,pedidos+1):
+            s = table[j-1][i]
+
+            #se o novo pedido nao ultrapassar a capacidade e tiver maior tempo:
+            if pizzas[j-1] <= i:
+                soma = table[j-1][i-pizzas[j-1]] + tempo[j-1]
+
+                if s < soma:
+                    s = soma
+
+            table[j][i] = s
+
+    #print(table)
+    print(table[pedidos][capacidadeMochila],"min.",tempo.sum())
+
+    #zera a tabela
+    table.clear()
