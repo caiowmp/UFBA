@@ -33,21 +33,30 @@ while 1 > 0:
     
     #começando o algoritmo (preenchendo a tabela)
     #for que percorre as colunas (capacidades)
-    for pedido in range(1,pedidos+1):
+    pedido = 0
+    capacidade = 0
+    while pedido < pedidos+1:
         #for que percorre as linhas (pedidos)
-        for capacidade in range(1,capacidadeMochila+1):
+        while capacidade < capacidadeMochila+1:
+            if pedido == 0 and capacidade == 0:
+                pedido+=1
+                capacidade+=1
+                
+            #valor de cima
+            s = table[pedido-1][capacidade]
             #se a quantidade de pizzas do pedido em questão for menor ou igual a capacidade atual
             if pizzas[pedido] <= capacidade:
+                soma = table[pedido-1][capacidade-pizzas[pedido]] + tempo[pedido]
                 #insere na tabela, o valor máximo entre a o valor de cima e o valor da de cima na capacidade que restará mais o valor do pedido.
-                if table[pedido-1][capacidade] > table[pedido-1][capacidade-pizzas[pedido]] + tempo[pedido]:
-                    table[pedido][capacidade] = table[pedido-1][capacidade]
-                else:
-                    table[pedido][capacidade] = (table[pedido-1][capacidade-pizzas[pedido]] + tempo[pedido])
-            #se não, copia o valor de cima
+                table[pedido][capacidade] = max(s,soma)
             else:
-                table[pedido][capacidade] = table[pedido-1][capacidade]
+                table[pedido][capacidade] = s
+            
+            capacidade+=1
         
+        print("Linha",pedido)
         print_table(table)
+        pedido+=1
 
     print(table[pedidos][capacidadeMochila]," min.")
     table.clear()
