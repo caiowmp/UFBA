@@ -12,7 +12,7 @@ while 1 > 0:
     for i in range(1,pedidos+1):
         entrada = input().split()
         tempo[i] = int(entrada[0])
-        pizzas[i] = int(entrada[0])
+        pizzas[i] = int(entrada[1])
 
     #criando uma tabela que tenha pedidos+1 linhas e capacidadeMochila+1 colunas.
     table = []
@@ -25,7 +25,7 @@ while 1 > 0:
     
     #começando o algoritmo (preenchendo a tabela)
     #for que percorre as colunas (capacidades)
-    for capacidade in range(1,capacidadeMochila+1):
+    for capacidade in range(1,capacidadeMochila):
 
         #for que percorre as linhas (pedidos)
         for pedido in range(1,pedidos+1):
@@ -40,6 +40,7 @@ while 1 > 0:
             else:
                 table[pedido][capacidade] = table[pedido-1][capacidade]
 
-    print(table[pedidos][capacidadeMochila])
-    print(table)
+        print(table)
+
+    print(table[pedidos][capacidadeMochila]," min.")
     table.clear()
