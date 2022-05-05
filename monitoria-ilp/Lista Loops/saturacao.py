@@ -1,6 +1,7 @@
 entrada_letra = "A"
+entrada_numero = 1
 
-while entrada_letra != "#":
+while entrada_letra != "#" and entrada_numero != 0:
     entrada_letra,entrada_numero = input().split()
     entrada_numero = int(entrada_numero)
 
