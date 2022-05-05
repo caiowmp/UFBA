@@ -1,50 +1,45 @@
 while 1 > 0:
-    #n
     pedidos = int(input())
 
     if pedidos == 0:
         break
 
-    #c
     capacidadeMochila = int(input())
-    tempo = []
-    pizzas = []
+    #cria os vetores dos pedidos considerando o pedido 0 nulo.
+    pizzas = [0] * (pedidos +1)
+    tempo = [0] * (pedidos + 1)
 
-    #cria tabela
+    for i in range(1,pedidos+1):
+        entrada = input().split()
+        tempo[i] = int(entrada[0])
+        pizzas[i] = int(entrada[0])
+
+    #criando uma tabela que tenha pedidos+1 linhas e capacidadeMochila+1 colunas.
     table = []
+    linhas = [0] * (capacidadeMochila + 1)
 
-    linha = [0] * 30
+    for i in range(pedidos+1):
+        table.append(linhas)
 
-    for i in range(20):
-        table.append(linha)
-
-    for i in range(pedidos):
-        entrada = list(map(int,input().split()))
-        #valor
-        tempo.append(entrada[0])
-        #peso
-        pizzas.append(entrada[1])
+    #a linha e a coluna 0 são sempre 0.
     
-    # i = b
-    for i in range(1,capacidadeMochila+1):
-        #zera a primeira linha
-        table[0][i] = 0
+    #começando o algoritmo (preenchendo a tabela)
+    #for que percorre as colunas (capacidades)
+    for capacidade in range(1,capacidadeMochila+1):
 
-        #j = i
-        for j in range(1,pedidos+1):
-            s = table[j-1][i]
+        #for que percorre as linhas (pedidos)
+        for pedido in range(1,pedidos+1):
+            #se a quantidade de pizzas do pedido em questão for menor ou igual a capacidade atual
+            if pizzas[pedido] <= capacidade:
+                #insere na tabela, o valor máximo entre a o valor de cima e o valor da de cima na capacidade que restará mais o valor do pedido.
+                if table[pedidos-1][capacidade] > table[pedidos-1][capacidade-pizzas[pedido]] + tempo[pedido]:
+                    table[pedido][capacidade] = table[pedidos-1][capacidade]
+                else:
+                    table[pedido][capacidade] = table[pedidos-1][capacidade-pizzas[pedido]] + tempo[pedido]
+            #se não, copia o valor de cima
+            else:
+                table[pedido][capacidade] = table[pedido-1][capacidade]
 
-            #se o novo pedido nao ultrapassar a capacidade e tiver maior tempo:
-            if pizzas[j-1] <= i:
-                soma = table[j-1][i-pizzas[j-1]] + tempo[j-1]
-
-                if s < soma:
-                    s = soma
-
-            table[j][i] = s
-
-    #print(table)
-    print(table[pedidos][capacidadeMochila],"min.",tempo.sum())
-
-    #zera a tabela
+    print(table[pedidos][capacidadeMochila])
+    print(table)
     table.clear()
