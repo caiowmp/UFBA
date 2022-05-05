@@ -1,8 +1,3 @@
-def print_table(table):
-    for linha in table:
-        print(linha)
-
-
 while 1 > 0:
     pedidos = int(input())
 
@@ -20,14 +15,7 @@ while 1 > 0:
         pizzas[i] = int(entrada[1])
 
     #criando uma tabela que tenha pedidos+1 linhas e capacidadeMochila+1 colunas.
-    table = []
-    linhas = [0] * (capacidadeMochila + 1)
-
-    for i in range(pedidos+1):
-        table.append(linhas)
-
-    print(pizzas)
-    print(tempo)
+    table = [[0 for _ in range(31)] for _ in range(21)]
 
     #a linha e a coluna 0 são sempre 0.
     
@@ -45,9 +33,6 @@ while 1 > 0:
                 table[pedido][capacidade] = max(s,soma)
             else:
                 table[pedido][capacidade] = s
-        
-        print("Linha",pedido)
-        print_table(table)
 
-    print(table[pedidos][capacidadeMochila]," min.")
+    print(table[pedidos][capacidadeMochila],"min.")
     table.clear()
