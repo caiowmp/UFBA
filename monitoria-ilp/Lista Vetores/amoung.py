@@ -2,6 +2,12 @@ jogadores = int(input())
 
 kills = [int(i) for i in input().split()]
 
-for i in range(jogadores):
-    print(min(kills),"",end="")
-    kills.remove(min(kills))
+aux = ['-'] * (max(kills) + 1)
+
+for i in kills:
+    aux[i] = i
+
+for i in aux:
+    if i != '-':
+        print(i,end=" ")
+    
