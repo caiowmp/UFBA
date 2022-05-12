@@ -3,23 +3,14 @@
 casos = input()
 casos = int(casos)
 
-memo = {0:0,1:1}
-
-def fib_bottom_up(n):
-    memo[0] = memo[1] = 1
-
-    for i in range(2,n+1):
-        memo[i] = memo[i-1] + memo[i-2]
-
-    return memo[n]
+aux=[1, 1]
+f=[0, 1]
+for i in range(2, 41):
+    aux.append(aux[i-1]+aux[i-2]+1)
+    f.append(f[i-1]+f[i-2])
 
 while casos != 0:
-    numero_desejado = int(input())
+    n=int(input())
+    print("fib(%d) = %d calls = %d" %(n, aux[n]-1, f[n]))
 
-    #res = fib_bottom_up(numero_desejado)
-
-    #print("fib(",numero_desejado,") = ",res,sep="")
-
-    print(fib_bottom_up(numero_desejado))
-
-    casos = casos - 1
+    casos -= 1
