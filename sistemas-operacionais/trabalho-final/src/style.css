@@ -1,0 +1,71 @@
+td,th {
+    border: 2px solid black;
+}
+
+#table td,th {
+    border: 2px solid black;
+    width: 4rem;
+    height: 4rem;
+    min-width: 4rem;
+    text-align: center;
+}
+
+#memoria td {
+    width: 2.5rem;
+    height: 2.5rem;
+    text-align: center;
+    /* vertical-align: top;
+    text-align: left; */
+}
+
+#disco {
+    border-collapse: separate;
+    border-spacing: 1rem;
+    border: 2px solid black;
+}
+
+#disco td {
+    width: 3rem;
+    height: 3rem;
+    text-align: center;
+}
+
+#page td {
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.number {
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+    border: none;
+}
+
+.bitValid {
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+}
+
+#legenda-executando{
+    background-color: green;
+}
+#legenda-sobrecarga{
+    background-color: red;
+}
+#legenda-estouro{
+    background-color: gray;
+}
+#legenda-deadline{
+    border-right: 4px solid orange;
+}
+
+#legenda-executando,#legenda-sobrecarga,#legenda-estouro{
+    border: 2px solid black;
+    width: 2rem;
+    height: 2rem;
+    min-width: 2rem;
+}
+
+.legenda {
+    margin: auto 4rem auto 0.5rem;
+}
