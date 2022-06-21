@@ -1,0 +1,2 @@
+server_folders/*
+!server_folders/.gitkeep
