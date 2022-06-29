@@ -44,8 +44,3 @@ for i in range(qtdPokemons-1):
 
 for i in range(qtdPokemons):
     print(*pokedex[i])
-
-    
-
-
-
