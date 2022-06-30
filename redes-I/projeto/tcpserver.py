@@ -78,9 +78,7 @@ while 1:
 		size_filename = struct.unpack('i',connectionSocket.recv(4))[0]
 		print(size_filename)
 		packet = connectionSocket.recv(size_filename)
-		print(packet)
 		filename = packet.decode()
-		# filename = connectionSocket.recv(1024).decode()
 		print(filename)
 		try:
 			file = open('server_folders/'+serverPort+'/'+filename,'rb')
@@ -91,7 +89,8 @@ while 1:
 			response = 'NCK'
 			connectionSocket.send(response.encode())
 
-		if response == 'ACK':
+		request = connectionSocket.recv(3).decode()
+		if request == 'ACK':
 			print("Sending file to HUB...")
 			packet = file.read(1024)
 			while (packet):
@@ -100,6 +99,22 @@ while 1:
 			file.close()
 			print('File downloaded. Notifying hub...')
 			connectionSocket.shutdown(SHUT_WR)
+
+	elif operation == 3:
+		size_filename = struct.unpack('i',connectionSocket.recv(4))[0]
+		print(size_filename)
+		packet = connectionSocket.recv(size_filename)
+		filename = packet.decode()
+		print(filename)
+
+		if os.path.exists('server_folders/'+serverPort+'/'+filename):
+			os.remove('server_folders/'+serverPort+'/'+filename)
+			response = 'ACK'
+		else:
+			print("The file does not exist")
+			response = 'NCK'
+
+		connectionSocket.send(response.encode())
 
 	print("Closing connection with HUB.")
 	connectionSocket.close()

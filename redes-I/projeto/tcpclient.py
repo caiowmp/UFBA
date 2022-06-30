@@ -19,21 +19,23 @@ def deposit():
 	clientSocket.send(struct.pack('i',ft_level))
 	print('Fault Tolerance Level sent')
 
-	try:
-		file = open(filepath,'rb')
-	except:
-		print('No such file or directory named: ', filepath)
-		sys.exit(0)
+	request = clientSocket.recv(3).decode()
+	if request == 'ACK':		
+		try:
+			file = open(filepath,'rb')
+		except:
+			print('No such file or directory named: ', filepath)
+			sys.exit(0)
 
-	print('Sending file to server', serverName, 'over port', serverPort, '...')
-	packet = file.read(1024)
-	while (packet):
-		clientSocket.send(packet)
+		print('Sending file to server', serverName, 'over port', serverPort, '...')
 		packet = file.read(1024)
+		while (packet):
+			clientSocket.send(packet)
+			packet = file.read(1024)
 
-	file.close()
-	print('File uploaded. Notifying server...')
-	clientSocket.shutdown(SHUT_WR)
+		file.close()
+		print('File uploaded. Notifying server...')
+		clientSocket.shutdown(SHUT_WR)
 
 	print('Waiting server response...')
 	response = clientSocket.recv(1024)
