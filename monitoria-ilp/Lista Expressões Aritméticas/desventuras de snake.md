@@ -17,3 +17,4 @@ Ela quis saber então, ao fim de três caçadas, com quantos ovos ela ficou e te
 | 10 12 20<br />0 1 1 | 36    |
 | 6 6 6<br />2 2 2    | 0     |
 
+

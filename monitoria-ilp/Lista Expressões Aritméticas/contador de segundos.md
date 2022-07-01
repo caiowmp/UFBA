@@ -18,3 +18,4 @@ Senku é um garoto muito inteligente e gosta de contar o tempo em segundos. As v
 | 5200    | 1h 26m 40s |
 | 59      | 0h 0m 59s  |
 
+

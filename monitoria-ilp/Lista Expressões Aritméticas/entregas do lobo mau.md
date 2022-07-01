@@ -19,3 +19,4 @@ Saiba que a estrada tem tamanho ‘T’, que os pedágios estão a uma distânci
 | 60 20<br />1 10  | 90    |
 | 100 51<br />2 50 | 250   |
 
+

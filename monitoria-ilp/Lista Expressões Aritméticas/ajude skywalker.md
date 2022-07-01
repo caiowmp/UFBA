@@ -17,3 +17,4 @@ Sua tarefa é: sabendo que a nave de Skywalker está equipada com um dróide cap
 | 100 10 20 30 30 | 10    |
 | 55 1 2 3 4      | 45    |
 
+

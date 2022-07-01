@@ -16,3 +16,4 @@ Saiba que a pista circular tem tamanho de ‘T’ metros e que eles pretendem co
 | 100 1000 | 0     |
 | 200 1100 | 100   |
 
+
