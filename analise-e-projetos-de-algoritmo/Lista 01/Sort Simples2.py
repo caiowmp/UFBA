@@ -21,3 +21,4 @@ print()
 
 for i in inicialList:
     print(i)
+    
