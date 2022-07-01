@@ -8,6 +8,6 @@ Durante o período de monitoria, pude aprimorar ainda mais minha habilidades em 
 
 <div align="center"> 
 
-<img src="[MATA37-Certificado_Caio-Miranda.docx.pdf](https://github.com/caiowmp/UFBA/files/9029010/MATA37-Certificado_Caio-Miranda.docx.pdf)" width="700px" /> 
+<img src="![MATA37-Certificado_Caio-Miranda docx_page-0001](https://user-images.githubusercontent.com/71469917/176901308-8cbc4711-d01e-4862-890b-2805faa8c54d.jpg)" width="700px" /> 
 
 </div>
