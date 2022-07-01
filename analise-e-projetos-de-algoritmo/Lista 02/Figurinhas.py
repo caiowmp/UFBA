@@ -18,3 +18,4 @@ while casos != 0:
     a , b = entrada
     print(MDC(a,b))
     casos = casos - 1
+    
