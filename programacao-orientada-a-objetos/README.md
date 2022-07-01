@@ -4,4 +4,4 @@ Repositório destinado às experiências vividas como durante a disciplina de Pr
 
 Durante o curso da matéria, pude aprender e colocar em prática o paradigma de programação orientada a objetos e aprender a linguagem de programação JAVA.
 
-Nesse rtepositório, você encontra algumas atividade, avaliações e projetos que eu fiz durante o curso.
+Nesse repositório, você encontra algumas atividades, avaliações e projetos que eu fiz durante o curso.
