@@ -18,3 +18,4 @@ while casos != 0:
     
     print(contador)
     casos -=1
+    
