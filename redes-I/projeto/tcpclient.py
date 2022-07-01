@@ -14,7 +14,9 @@ def deposit():
 	clientSocket.send(filename.encode())
 	print('Filename sent')
 
-	ft_level = int(input('Input fault tolerance level: '))
+	ft_level = -1
+	while ft_level < 0:
+		ft_level = int(input('Input fault tolerance level [> 0]: '))
 	print('Sending Fault Tolerance Level')
 	clientSocket.send(struct.pack('i',ft_level))
 	print('Fault Tolerance Level sent')
@@ -54,8 +56,8 @@ def recovery():
 
 	print('Waiting server response...')
 	response = clientSocket.recv(3).decode()
-	print(response)
 	if response == 'ACK':	
+		print('From Server: File available, sending file...')
 		try:
 			file = open("local_folders/"+filename,'wb')
 		except:
@@ -70,7 +72,7 @@ def recovery():
 		file.close()
 		print("File recovered succesfully.")
 	else:
-		print("File not available.")
+		print("From Server: File not available.")
 
 
 serverName = 'localhost'
@@ -86,21 +88,26 @@ except:
 	sys.exit(0)
 
 print("List of operations available:")
-print("[1] Deposit Mode")
-print("[2] Recovery Mode")
+print("\t[1] Deposit Mode")
+print("\t[2] Recovery Mode")
 operation = input("Input the number of the operation you want to do: ")
 
 while operation != '1' and operation != '2':
 	print("List of operations available:")
-	print("[1] Deposit Mode")
-	print("[2] Recovery Mode")
+	print("\t[1] Deposit Mode")
+	print("\t[2] Recovery Mode")
 	operation = input("Input the number of the operation you want to do: ")
 
-if operation == '1':
-	deposit()
-elif operation == '2':
-	recovery()
-
-print('Closing TCP connection...')
-clientSocket.close()
-print('Finish.')
+try:
+	if operation == '1':
+		deposit()
+	elif operation == '2':
+		recovery()
+	
+	print('Closing TCP connection...')
+	clientSocket.close()
+	print('Finish.')
+except Exception as e:
+	print('An error ocurred:', e)
+	print('Closing TCP connection...')
+	clientSocket.close()

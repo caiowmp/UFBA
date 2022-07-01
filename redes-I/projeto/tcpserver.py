@@ -4,27 +4,18 @@ import struct
 import time
 import sys
 
-serverPort = input('Insert Server Port: ') 
-directory_path = os.getcwd()
-new_abs_path = os.path.join(directory_path, 'server_folders')
-new_abs_path = os.path.join(new_abs_path, serverPort)
-if not os.path.exists(new_abs_path):
-	os.mkdir(new_abs_path)
-
-t1 = time.time()
-connectedToHub = False
-while time.time()-t1 < 2:
-	hubName = 'localhost'
-	hubPort = 12001
+def connectToHub():
+	HubName = 'localhost'
+	HubPort = 12001
 
 	try:
 		clientSocket = socket(AF_INET, SOCK_STREAM)
-		print('Initiating TCP connection with server', hubName, 'over port', hubPort, '...')
-		clientSocket.connect((hubName,hubPort))
+		print('Initiating TCP connection with server', HubName, 'over port', HubPort, '...')
+		clientSocket.connect((HubName,HubPort))
 	except:
 		print('Could not make a connection to the server')
 		print('Try again')
-		continue
+		return False
 
 
 	clientSocket.send(struct.pack('i', int(serverPort)))
@@ -39,7 +30,81 @@ while time.time()-t1 < 2:
 	print('Finish.')
 	if response == 'OK':
 		connectedToHub = True
-	break
+
+	return connectedToHub
+
+def deposit(connectionSocket):
+	size_filename = struct.unpack('i',connectionSocket.recv(4))[0]
+	filename = connectionSocket.recv(size_filename).decode()
+	print('Filename:', filename)
+
+	file = open('server_folders/'+serverPort+'/'+filename,'wb')
+	
+	print('Receiving file...')
+	packet = connectionSocket.recv(1024)
+	while (packet):
+		file.write(packet)
+		packet = connectionSocket.recv(1024)
+
+	file.close()
+	print('File received. Notifying Hub...')
+	response = 'OK'
+	connectionSocket.send(response.encode())
+
+def recovery(connectionSocket):
+	size_filename = struct.unpack('i',connectionSocket.recv(4))[0]
+	filename = connectionSocket.recv(size_filename).decode()
+	print('Filename:', filename)
+	
+	try:
+		file = open('server_folders/'+serverPort+'/'+filename,'rb')
+		print('File available. Notifying Hub...')
+		response = 'ACK'
+		connectionSocket.send(response.encode())
+	except:
+		print('No such file or directory named:', filename)
+		response = 'NCK'
+		print('Notifying Hub...')
+		connectionSocket.send(response.encode())
+
+	request = connectionSocket.recv(3).decode()
+	if request == 'ACK':
+		print("Sending file to Hub...")
+		packet = file.read(1024)
+		while (packet):
+			connectionSocket.send(packet)
+			packet = file.read(1024)
+		file.close()
+		print('File sent. Notifying Hub...')
+		connectionSocket.shutdown(SHUT_WR)
+
+def remove(connectionSocket):
+	size_filename = struct.unpack('i',connectionSocket.recv(4))[0]
+	filename = connectionSocket.recv(size_filename).decode()
+	print('Filename:', filename)
+
+	if os.path.exists('server_folders/'+serverPort+'/'+filename):
+		print("File exist. Removing file...")
+		os.remove('server_folders/'+serverPort+'/'+filename)
+		response = 'ACK'
+	else:
+		print("The file does not exist")
+		response = 'NCK'
+
+	print("Notifying Hub")
+	connectionSocket.send(response.encode())
+
+serverPort = input('Insert Server Port: ') 
+directory_path = os.getcwd()
+new_abs_path = os.path.join(directory_path, 'server_folders')
+new_abs_path = os.path.join(new_abs_path, serverPort)
+if not os.path.exists(new_abs_path):
+	os.mkdir(new_abs_path)
+
+t1 = time.time()
+connectedToHub = False
+while time.time()-t1 < 2 and not connectedToHub:
+	connectedToHub = connectToHub()
 
 if not connectedToHub:
 	print("Server didn't connect to Hub.")
@@ -50,71 +115,31 @@ serverPortInt = int(serverPort)
 serverSocket = socket(AF_INET,SOCK_STREAM)
 serverSocket.bind(('',serverPortInt))
 serverSocket.listen(1)
+print()
 print('The server is ready to receive')
 
 
 while 1:
 	connectionSocket, addr = serverSocket.accept()
-	operation = struct.unpack('i',connectionSocket.recv(4))[0]
-	if operation == 1:
-		size_filename = struct.unpack('i',connectionSocket.recv(4))[0]
-		print(size_filename)
-		packet = connectionSocket.recv(size_filename)
-		print(packet)
-		filename = packet.decode()
-		# filename = connectionSocket.recv(1024).decode()
-		print(filename)
-		file = open('server_folders/'+serverPort+'/'+filename,'wb')
-		
-		packet = connectionSocket.recv(1024)
-		while (packet):
-			file.write(packet)
-			packet = connectionSocket.recv(1024)
+	try:
+		operation = struct.unpack('i',connectionSocket.recv(4))[0]
+		if operation == 1:
+			print('Deposit operation.')
+			deposit(connectionSocket)
+		elif operation == 2:
+			print('Recovery operation.')
+			recovery(connectionSocket)
+		elif operation == 3:
+			print('Remove operation.')
+			remove(connectionSocket)
 
-		file.close()
-		ack = 'OK'
-		connectionSocket.send(ack.encode())
-	elif operation == 2:
-		size_filename = struct.unpack('i',connectionSocket.recv(4))[0]
-		print(size_filename)
-		packet = connectionSocket.recv(size_filename)
-		filename = packet.decode()
-		print(filename)
-		try:
-			file = open('server_folders/'+serverPort+'/'+filename,'rb')
-			response = 'ACK'
-			connectionSocket.send(response.encode())
-		except:
-			print('No such file or directory named: ', filename)
-			response = 'NCK'
-			connectionSocket.send(response.encode())
+		print()
 
-		request = connectionSocket.recv(3).decode()
-		if request == 'ACK':
-			print("Sending file to HUB...")
-			packet = file.read(1024)
-			while (packet):
-				connectionSocket.send(packet)
-				packet = file.read(1024)
-			file.close()
-			print('File downloaded. Notifying hub...')
-			connectionSocket.shutdown(SHUT_WR)
-
-	elif operation == 3:
-		size_filename = struct.unpack('i',connectionSocket.recv(4))[0]
-		print(size_filename)
-		packet = connectionSocket.recv(size_filename)
-		filename = packet.decode()
-		print(filename)
-
-		if os.path.exists('server_folders/'+serverPort+'/'+filename):
-			os.remove('server_folders/'+serverPort+'/'+filename)
-			response = 'ACK'
-		else:
-			print("The file does not exist")
-			response = 'NCK'
-
-		connectionSocket.send(response.encode())
-
-	print("Closing connection with HUB.")
-	connectionSocket.close()
+		print("Closing connection with Hub.")
+		print()
+		connectionSocket.close()
+	except Exception as e:
+		print('An error ocurred:', e)
+		print("Closing connection with Hub.")
+		print()
+		connectionSocket.close()

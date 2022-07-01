@@ -12,6 +12,19 @@ class ListenServers(Thread):
 		self.num = num
 		self.portsAvailable = []
 
+	def contactServer(self, serverPort):
+		serverName = 'localhost'
+		try:
+			clientHubSocket = socket(AF_INET, SOCK_STREAM)
+			print('Initiating TCP connection with server', serverName, 'over port', serverPort, '...')
+			clientHubSocket.connect((serverName,serverPort))
+			print('Closing TCP connection...')
+			clientHubSocket.close()
+			return True
+		except:
+			print('Could not make a connection to the server', serverPort)
+			return False
+
 	def run(self):
 		serverPort = 12001
 		hubSocket = socket(AF_INET,SOCK_STREAM)
@@ -24,15 +37,17 @@ class ListenServers(Thread):
 			connectionSocket, addr = hubSocket.accept()
 			print('Connected to server', addr)
 			port = struct.unpack('i',connectionSocket.recv(4))[0]
-			print('Port received', port)
-			if port not in self.portsAvailable:
-				self.portsAvailable.append(port)
+			print('Port received:', port)
+			if not self.contactServer(port):
+				if port not in self.portsAvailable:
+					self.portsAvailable.append(port)
 				response = 'OK'
 			else:
 				print("Port", port,"is already available")
 				response = "Port is already available"
 
-			print(self.portsAvailable)
+			print("Ports available: ",self.portsAvailable)
+			print()
 			connectionSocket.send(response.encode())
 			connectionSocket.close()
 
@@ -67,7 +82,6 @@ class ListenClient(Thread):
 
 			print('Waiting server response...')
 			response = clientHubSocket.recv(3).decode()
-			print(response)
 			if response == 'ACK':
 				print("Server", serverName, "in port", serverPort, "has the file", filename, ".")
 				servers.append((serverName, serverPort))
@@ -83,6 +97,7 @@ class ListenClient(Thread):
 		return servers
 
 	def add_files_to_servers(self, clientConnectionSocket, servers_with_file, size_filename, filename, ft_level):
+		print("Receiving file from Client...")
 		file = open('temp','wb')
 				
 		packet = clientConnectionSocket.recv(1024)
@@ -113,7 +128,7 @@ class ListenClient(Thread):
 
 			print("Sending operation.")
 			clientHubSocket.send(struct.pack('i', 1))
-			print('Sending filename')
+			print('Sending filename.')
 			print(filename)
 			clientHubSocket.send(struct.pack('i',size_filename))
 			clientHubSocket.send(filename.encode())
@@ -141,8 +156,7 @@ class ListenClient(Thread):
 
 		return ft_level
 
-	def erase_files_from_servers(self, clientConnectionSocket, servers_with_file, size_filename, filename, ft_level_remaining):
-		print(servers_with_file)
+	def remove_files_from_servers(self, servers_with_file, size_filename, filename, ft_level_remaining):
 		for server in servers_with_file:
 			try:
 				clientHubSocket = socket(AF_INET, SOCK_STREAM)
@@ -173,10 +187,131 @@ class ListenClient(Thread):
 			print('Closing TCP connection...')
 			clientHubSocket.close()
 			print('Finish.')
+			print()
 			if ft_level_remaining == 0:
 				break
 
 		return ft_level_remaining
+
+	def recover_file(self, size_filename, filename):
+		file_available = False
+		for serverPort in self.threadServers.portsAvailable:
+			serverName = 'localhost'
+
+			try:
+				clientHubSocket = socket(AF_INET, SOCK_STREAM)
+				print('Initiating TCP connection with server', serverName, 'over port', serverPort, '...')
+				clientHubSocket.connect((serverName,serverPort))
+			except:
+				print('Could not make a connection to the server', serverPort)
+				continue
+
+			print("Sending operation.")
+			clientHubSocket.send(struct.pack('i', 2))
+
+			print('Sending filename.')
+			clientHubSocket.send(struct.pack('i',size_filename))
+			clientHubSocket.send(filename.encode())
+
+			print('Waiting server response...')
+			response = clientHubSocket.recv(3).decode()
+			if response == 'ACK':
+				print("Server", serverName, "in port", serverPort, "has the file", filename, ".")
+				print("Requesting the file from server...")
+				request = 'ACK'
+				clientHubSocket.send(request.encode())
+
+				file_available = True
+				try:
+					file = open('temp','wb')
+				except:
+					print("Not possible to create the file")
+					sys.exit(0)
+
+				print("Receiving file from server...")
+				packet = clientHubSocket.recv(1024)
+				while (packet):
+					file.write(packet)
+					packet = clientHubSocket.recv(1024)
+				file.close()
+				print("File received.")
+			else:
+				print("Server", serverName, "in port", serverPort, "doesn't have the file", filename, ".")
+
+			print('Closing TCP connection...')
+			clientHubSocket.close()
+			print('Finish.')
+
+			if response == 'ACK':
+				break
+
+		return file_available
+
+	def deposit(self, clientConnectionSocket, operation):
+		size_filename = struct.unpack('i',clientConnectionSocket.recv(4))[0]
+		filename = clientConnectionSocket.recv(size_filename).decode()
+		print('Filename:', filename)
+		ft_level = struct.unpack('i',clientConnectionSocket.recv(4))[0]
+		print('Tolerance Level:', ft_level)
+		print()
+
+		servers_wf = self.servers_with_file(size_filename, filename, operation)
+		print('Servers with file:',servers_wf)
+
+		ft_level -= len(servers_wf)
+
+		response = 'ACK'
+		if ft_level <= 0:
+			response = 'NCK'
+
+		clientConnectionSocket.send(response.encode())
+
+		if ft_level < 0:
+			print('Actual Tolerance Level greater than requested.')
+			print('Removing files from servers...')
+			print()
+			ft_level = self.remove_files_from_servers(servers_wf, size_filename, filename, -ft_level)
+		elif ft_level > 0:
+			print('Actual Tolerance Level smaller than requested.')
+			print('Adding files to servers...')
+			print()
+			ft_level = self.add_files_to_servers(clientConnectionSocket, servers_wf, size_filename, filename, ft_level)
+
+		if ft_level == 0:
+			response = 'OK'
+		else:
+			response = 'Tolerance Level not accomplished: '+str(ft_level)
+		
+		clientConnectionSocket.send(response.encode())
+
+	def recovery(self, clientConnectionSocket, operation):
+		size_filename = struct.unpack('i',clientConnectionSocket.recv(4))[0]
+		filename = clientConnectionSocket.recv(size_filename).decode()
+		print("Filename:",filename)
+		print()
+
+		file_available = self.recover_file(size_filename, filename)
+		if file_available:
+			response = 'ACK'
+			clientConnectionSocket.send(response.encode())
+			try:
+				file = open('temp','rb')
+			except:
+				print('No such file or directory named: ', filename)
+				sys.exit(0)
+
+			print("Sending file to client...")
+			packet = file.read(1024)
+			while (packet):
+				clientConnectionSocket.send(packet)
+				packet = file.read(1024)
+
+			file.close()
+			print('File downloaded. Notifying client...')
+			clientConnectionSocket.shutdown(SHUT_WR)
+		else:
+			response = 'NCK'
+			clientConnectionSocket.send(response.encode())
 
 	def run(self):
 		serverPort = 12000
@@ -185,118 +320,32 @@ class ListenClient(Thread):
 		hubSocket.listen(1)
 		print('The Hub is ready to receive from Client')
 
-
 		while 1:
 			clientConnectionSocket, clientAddr = hubSocket.accept()
-			operation = struct.unpack('i',clientConnectionSocket.recv(4))[0]
+			try:
+				print('Client connection accepted')
+				operation = struct.unpack('i',clientConnectionSocket.recv(4))[0]
+				print()
+				if operation == 1:
+					print('Deposit operation')
+					print()
+					self.deposit(clientConnectionSocket, operation)
+				elif operation == 2:
+					print('Recovery operation')
+					print()
+					self.recovery(clientConnectionSocket, operation)
 
-			if operation == 1:
-				size_filename = struct.unpack('i',clientConnectionSocket.recv(4))[0]
-				filename = clientConnectionSocket.recv(size_filename).decode()
-				ft_level = struct.unpack('i',clientConnectionSocket.recv(4))[0]
+				print()
+				if os.path.exists('temp'):
+					os.remove('temp')
 				
-				servers_wf = self.servers_with_file(size_filename, filename, operation)
-				
-				ft_level -= len(servers_wf)
-
-				response = 'ACK'
-				if ft_level <= 0:
-					response = 'NCK'
-
-				clientConnectionSocket.send(response.encode())
-
-				if ft_level < 0:
-					ft_level = self.erase_files_from_servers(clientConnectionSocket, servers_wf, size_filename, filename, -ft_level)
-				elif ft_level > 0:
-					ft_level = self.add_files_to_servers(clientConnectionSocket, servers_wf, size_filename, filename, ft_level)
-				
-
-
-				if ft_level == 0:
-					response = 'OK'
-				else:
-					response = 'Tolerance Level not accomplished: '+str(ft_level)
-				
-				clientConnectionSocket.send(response.encode())
-			elif operation == 2:
-				size_filename = struct.unpack('i',clientConnectionSocket.recv(4))[0]
-				print(size_filename)
-				filename = clientConnectionSocket.recv(size_filename).decode()
-
-				file_available = False
-				for serverPort in self.threadServers.portsAvailable:
-					serverName = 'localhost'
-
-					try:
-						clientHubSocket = socket(AF_INET, SOCK_STREAM)
-						print('Initiating TCP connection with server', serverName, 'over port', serverPort, '...')
-						clientHubSocket.connect((serverName,serverPort))
-					except:
-						print('Could not make a connection to the server', serverPort)
-						continue
-
-					print("Sending operation.")
-					clientHubSocket.send(struct.pack('i', 2))
-
-					print('Sending filename')
-					print(filename)
-					clientHubSocket.send(struct.pack('i',size_filename))
-					clientHubSocket.send(filename.encode())
-
-					print('Waiting server response...')
-					response = clientHubSocket.recv(3).decode()
-					print(response)
-					if response == 'ACK':
-						print("Server", serverName, "in port", serverPort, "has the file", filename, ".")
-						request = 'ACK'
-						clientHubSocket.send(request.encode())
-
-						file_available = True
-						try:
-							file = open('temp','wb')
-						except:
-							print("Not possible to create the file")
-							sys.exit(0)
-
-						packet = clientHubSocket.recv(1024)
-						while (packet):
-							file.write(packet)
-							packet = clientHubSocket.recv(1024)
-						file.close()
-					else:
-						print("Server", serverName, "in port", serverPort, "doesn't have the file", filename, ".")
-
-					print('Closing TCP connection...')
-					clientHubSocket.close()
-					print('Finish.')
-
-					if response == 'ACK':
-						break
-
-				if file_available:
-					response = 'ACK'
-					clientConnectionSocket.send(response.encode())
-					try:
-						file = open('temp','rb')
-					except:
-						print('No such file or directory named: ', filename)
-						sys.exit(0)
-
-					print("Sending file to client...")
-					packet = file.read(1024)
-					while (packet):
-						clientConnectionSocket.send(packet)
-						packet = file.read(1024)
-
-					file.close()
-					print('File downloaded. Notifying client...')
-					clientConnectionSocket.shutdown(SHUT_WR)
-				else:
-					response = 'NCK'
-					clientConnectionSocket.send(response.encode())
-
-			os.remove('temp')
-			clientConnectionSocket.close()
+				print("Closing connection with Client.")
+				clientConnectionSocket.close()
+			except Exception as e:
+				print('An error ocurred:', e)
+				print("Closing connection with Client.")
+				print()
+				clientConnectionSocket.close()
 
 
 
