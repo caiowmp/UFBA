@@ -102,3 +102,4 @@ while casos !=0:
     #print_matriz(labirinto)
 
     casos -=1
+    
