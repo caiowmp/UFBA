@@ -29,3 +29,4 @@ for i in range(testes):
     #print(vagoes,swaps)
 
     print("Optimal train swapping takes",swaps,"swaps.")
+    
