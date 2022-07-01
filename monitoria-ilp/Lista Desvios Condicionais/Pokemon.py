@@ -13,3 +13,4 @@ if porcentagem <= 100:
         print("Seu pokemon e uma maravilha")
 else:
     print("Hum, parece que houve um erro")
+    

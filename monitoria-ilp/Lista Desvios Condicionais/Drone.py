@@ -5,3 +5,4 @@ if coordenadaDroneX == coordenadaEntregaX and coordenadaDroneY == coordenadaEntr
     print("Soltar pacote")
 else:
     print("Nao soltar pacote")
+    

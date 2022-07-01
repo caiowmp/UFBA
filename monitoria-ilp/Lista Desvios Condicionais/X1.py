@@ -12,3 +12,4 @@ elif pontosPedro > pontosLucas:
     print("Pedro")
 else:
     print("Empate")
+    

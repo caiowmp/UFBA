@@ -10,3 +10,4 @@ else:
         print("...e o goleiro pega")
     else:
         print("Gol")
+        

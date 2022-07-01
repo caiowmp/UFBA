@@ -24,3 +24,4 @@ elif doces % 3 == 2:
 print("Chapeuzinho Vermelho",chapeuzinho)
 print("Vovozinha",vo)
 print("Lobo Mau",lobo)
+
