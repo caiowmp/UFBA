@@ -20,6 +20,6 @@ for i in tempos:
             direita = meio - 1
         elif(i >= cidade[meio]):
             esquerda = meio + 1
-        else:
-            break
+            #print(*cidade)
+            #print(esquerda)
     print(esquerda)
