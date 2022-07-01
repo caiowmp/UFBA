@@ -15,3 +15,4 @@ b = int(b)
 resultado = a//b
 
 print(resultado)
+

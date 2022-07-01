@@ -17,3 +17,4 @@ e = int(e)
 resultado = a-b-c-d-e
 
 print(resultado)
+

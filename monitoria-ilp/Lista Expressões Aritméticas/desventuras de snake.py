@@ -17,6 +17,7 @@ E1 = int(E1)
 E2 = int(E2)
 E3 = int(E3)
 
+
 # 3* pois o ovo envenado explode
 resultado = resultado - (3*(E1+E2+E3))
 
