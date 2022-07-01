@@ -19,3 +19,4 @@ Imprima a saída conforme foi especificado.
 | 7 21 -14           | -14 <br />7 <br />21<br />  <br />7 <br />21 <br />-14 |
 | -14 21 7           | -14<br /> 7 <br />21<br />  <br />-14 <br />21 <br />7 |
 
+
