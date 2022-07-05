@@ -1,9 +1,23 @@
+"""
+Client da aplicação
+
+Conecta com o hub, envia a operação efetuada ("deposit" ou "recovery") e espera uma resposta.
+"""
+
 from socket import *
 import os
 import sys
 import struct
 
 def deposit():
+	"""
+		Executa a lógica da operação "deposit"
+
+		Returns
+		-------
+		None
+	"""
+
 	clientSocket.send(struct.pack('i', 1))
 
 	filepath = input('Input filename: ')
@@ -22,7 +36,7 @@ def deposit():
 	print('Fault Tolerance Level sent')
 
 	request = clientSocket.recv(3).decode()
-	if request == 'ACK':		
+	if request == 'ACK':
 		try:
 			file = open(filepath,'rb')
 		except:
@@ -45,6 +59,14 @@ def deposit():
 	print('From Server:', response.decode())
 
 def recovery():
+	"""
+		Executa a lógica da operação "recovery"
+
+		Returns
+		-------
+		None
+	"""
+
 	clientSocket.send(struct.pack('i', 2))
 
 	filename = input('Input filename: ')
@@ -56,7 +78,7 @@ def recovery():
 
 	print('Waiting server response...')
 	response = clientSocket.recv(3).decode()
-	if response == 'ACK':	
+	if response == 'ACK':
 		print('From Server: File available, sending file...')
 		try:
 			file = open("local_folders/"+filename,'wb')
@@ -74,40 +96,41 @@ def recovery():
 	else:
 		print("From Server: File not available.")
 
+# Lógica do client
+if __name__ == "__main__":
+	serverName = 'localhost'
+	serverPort = 12000
 
-serverName = 'localhost'
-serverPort = 12000
+	try:
+		clientSocket = socket(AF_INET, SOCK_STREAM)
+		print('Initiating TCP connection with server', serverName, 'over port', serverPort, '...')
+		clientSocket.connect((serverName,serverPort))
+	except:
+		print('Could not make a connection to the server')
+		print('Try again')
+		sys.exit(0)
 
-try:
-	clientSocket = socket(AF_INET, SOCK_STREAM)
-	print('Initiating TCP connection with server', serverName, 'over port', serverPort, '...')
-	clientSocket.connect((serverName,serverPort))
-except:
-	print('Could not make a connection to the server')
-	print('Try again')
-	sys.exit(0)
-
-print("List of operations available:")
-print("\t[1] Deposit Mode")
-print("\t[2] Recovery Mode")
-operation = input("Input the number of the operation you want to do: ")
-
-while operation != '1' and operation != '2':
 	print("List of operations available:")
 	print("\t[1] Deposit Mode")
 	print("\t[2] Recovery Mode")
 	operation = input("Input the number of the operation you want to do: ")
 
-try:
-	if operation == '1':
-		deposit()
-	elif operation == '2':
-		recovery()
-	
-	print('Closing TCP connection...')
-	clientSocket.close()
-	print('Finish.')
-except Exception as e:
-	print('An error ocurred:', e)
-	print('Closing TCP connection...')
-	clientSocket.close()
+	while operation != '1' and operation != '2':
+		print("List of operations available:")
+		print("\t[1] Deposit Mode")
+		print("\t[2] Recovery Mode")
+		operation = input("Input the number of the operation you want to do: ")
+
+	try:
+		if operation == '1':
+			deposit()
+		elif operation == '2':
+			recovery()
+
+		print('Closing TCP connection...')
+		clientSocket.close()
+		print('Finish.')
+	except Exception as e:
+		print('An error ocurred:', e)
+		print('Closing TCP connection...')
+		clientSocket.close()

@@ -1,3 +1,9 @@
+"""
+Hub da aplicação
+
+Escuta os servidores e os clients que conectam com ele mesmo e executa as operações enviadas pelo client nos servers.
+"""
+
 from socket import *
 from threading import Thread
 import time
@@ -6,13 +12,47 @@ import struct
 import os
 
 class ListenServers(Thread):
+	"""
+	Thread que escuta os servidores que estão conectando com o hub.
+
+	...
+
+	Attributes
+	----------
+	num : int
+		Numero da thread
+	portsAvailable : list of int
+		Portas dos servidores conectados com o hub
+
+	"""
 
 	def __init__(self, num):
+		"""
+		Constroi todos os atributos e inicia o thread
+
+		Parameters
+		----------
+		num : int
+			Numero da thread
+		"""
 		Thread.__init__(self)
 		self.num = num
 		self.portsAvailable = []
 
 	def contactServer(self, serverPort):
+		"""
+		Contacta o servidor e verifica se a conexão com o mesmo ainda é possível
+
+		Parameters
+		----------
+		serverPort : int
+			Porta do servidor que será contatado
+
+		Returns
+		-------
+		bool
+			Estado da conexão com o servidor contatado
+		"""
 		serverName = 'localhost'
 		try:
 			clientHubSocket = socket(AF_INET, SOCK_STREAM)
@@ -26,6 +66,9 @@ class ListenServers(Thread):
 			return False
 
 	def run(self):
+		"""
+		Executa a lógica da thread
+		"""
 		serverPort = 12001
 		hubSocket = socket(AF_INET,SOCK_STREAM)
 		hubSocket.bind(('',serverPort))
@@ -53,14 +96,53 @@ class ListenServers(Thread):
 
 
 class ListenClient(Thread):
+	"""
+	Thread que escuta os clients que irão conectar com o hub.
+
+	...
+
+	Attributes
+	----------
+	num : int
+		Numero da thread
+	threadServers : ListenServers
+		Objeto referente ao thread dos servidores
+
+	"""
 
 	def __init__(self, num, threadServers):
+		"""
+		Constroi todos os atributos e inicia o thread
+
+		Parameters
+		----------
+		num : int
+			Numero da thread
+		threadServers : ListenServers
+			Objeto referente ao thread dos servidores
+		"""
 		Thread.__init__(self)
 		self.num = num
 		self.threadServers = threadServers
 
-
 	def servers_with_file(self, size_filename, filename, operation):
+		"""
+		Se conecta com os servidores disponíveis e verifica quais possuem um determinado arquivo
+
+		Parameters
+		----------
+		size_filename : int
+			Tamanho em bytes do nome do arquivo a ser procurado
+		filename : str
+			Nome do arquivo a ser procurado
+		operation: int
+			Operação executada pelo client
+		
+		Returns
+		-------
+		list of int
+			Portas dos servidores conectados com o hub que possuem o arquivo
+		"""
 		servers = []
 		for serverPort in self.threadServers.portsAvailable:
 			serverName = 'localhost'
@@ -97,6 +179,27 @@ class ListenClient(Thread):
 		return servers
 
 	def add_files_to_servers(self, clientConnectionSocket, servers_with_file, size_filename, filename, ft_level):
+		"""
+		Recebe um arquivo do client e adiciona o mesmo nos servidores para atender a tolerância desejada
+
+		Parameters
+		----------
+		clientConnectionSocket : socket
+			Conexão com o socket do client
+		servers_with_file : list of int
+			Portas dos servidores conectados com o hub que possuem o arquivo
+		size_filename : int
+			Tamanho em bytes do nome do arquivo a ser adicionado
+		filename : str
+			Nome do arquivo a ser adicionado
+		ft_level: int
+			Nível de tolerância desejado
+		
+		Returns
+		-------
+		int
+			Nível de tolerância alcançado
+		"""
 		print("Receiving file from Client...")
 		file = open('temp','wb')
 				
@@ -157,6 +260,25 @@ class ListenClient(Thread):
 		return ft_level
 
 	def remove_files_from_servers(self, servers_with_file, size_filename, filename, ft_level_remaining):
+		"""
+		Remove um determinado arquivo dos servidores conectados para atender a tolerância desejada
+
+		Parameters
+		----------
+		servers_with_file : list of int
+			Portas dos servidores conectados com o hub que possuem o arquivo
+		size_filename : int
+			Tamanho em bytes do nome do arquivo a ser removido
+		filename : str
+			Nome do arquivo a ser removido
+		ft_level_remaining: int
+			Nível de tolerância que falta para chegar no nível desejado
+		
+		Returns
+		-------
+		ft_level_remaining
+			Nível de tolerância que falta para chegar no nível desejado
+		"""
 		for server in servers_with_file:
 			try:
 				clientHubSocket = socket(AF_INET, SOCK_STREAM)
@@ -194,6 +316,21 @@ class ListenClient(Thread):
 		return ft_level_remaining
 
 	def recover_file(self, size_filename, filename):
+		"""
+		Recupera um arquivo dos servidores e salva-o em um arquivo temporario
+
+		Parameters
+		----------
+		size_filename : int
+			Tamanho em bytes do nome do arquivo a ser procurado
+		filename : str
+			Nome do arquivo a ser procurado
+		
+		Returns
+		-------
+		bool
+			Estado da recuperação do arquivo
+		"""
 		file_available = False
 		for serverPort in self.threadServers.portsAvailable:
 			serverName = 'localhost'
@@ -248,6 +385,20 @@ class ListenClient(Thread):
 		return file_available
 
 	def deposit(self, clientConnectionSocket, operation):
+		"""
+		Executa a lógica da operação "deposit" executada pelo client
+
+		Parameters
+		----------
+		clientConnectionSocket : socket
+			Conexão com o socket do client
+		operation: int
+			Operação executada pelo client
+
+		Returns
+		-------
+		None
+		"""
 		size_filename = struct.unpack('i',clientConnectionSocket.recv(4))[0]
 		filename = clientConnectionSocket.recv(size_filename).decode()
 		print('Filename:', filename)
@@ -285,6 +436,20 @@ class ListenClient(Thread):
 		clientConnectionSocket.send(response.encode())
 
 	def recovery(self, clientConnectionSocket, operation):
+		"""
+		Executa a lógica da operação "recovery" executada pelo client
+
+		Parameters
+		----------
+		clientConnectionSocket : socket
+			Conexão com o socket do client
+		operation: int
+			Operação executada pelo client
+
+		Returns
+		-------
+		None
+		"""
 		size_filename = struct.unpack('i',clientConnectionSocket.recv(4))[0]
 		filename = clientConnectionSocket.recv(size_filename).decode()
 		print("Filename:",filename)
@@ -314,6 +479,9 @@ class ListenClient(Thread):
 			clientConnectionSocket.send(response.encode())
 
 	def run(self):
+		"""
+		Executa a lógica da thread
+		"""
 		serverPort = 12000
 		hubSocket = socket(AF_INET,SOCK_STREAM)
 		hubSocket.bind(('',serverPort))
@@ -347,12 +515,11 @@ class ListenClient(Thread):
 				print()
 				clientConnectionSocket.close()
 
+# Lógica do hub
+if __name__ == "__main__":
+	threadServers = ListenServers(1)
+	threadServers.start()
 
-
-
-threadServers = ListenServers(1)
-threadServers.start()
-
-threadClient = ListenClient(1, threadServers)
-threadClient.start()		
+	threadClient = ListenClient(1, threadServers)
+	threadClient.start()
 

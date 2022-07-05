@@ -1,3 +1,9 @@
+"""
+Server da aplicação
+
+Conecta com o hub e escuta as operações que serão executadas.
+"""
+
 from socket import *
 import os
 import struct
@@ -5,6 +11,14 @@ import time
 import sys
 
 def connectToHub():
+	"""
+		Efetua a conexão com o hub
+
+		Returns
+		-------
+		bool
+			Estado da conexão com o hub
+	"""
 	HubName = 'localhost'
 	HubPort = 12001
 
@@ -34,6 +48,18 @@ def connectToHub():
 	return connectedToHub
 
 def deposit(connectionSocket):
+	"""
+		Executa a lógica da operação "deposit" (arquivo sendo recebido pelo hub e salvo no servidor)
+
+		Parameters
+		----------
+		connectionSocket : socket
+			Conexão com o socket do hub
+
+		Returns
+		-------
+		None
+	"""
 	size_filename = struct.unpack('i',connectionSocket.recv(4))[0]
 	filename = connectionSocket.recv(size_filename).decode()
 	print('Filename:', filename)
@@ -52,6 +78,18 @@ def deposit(connectionSocket):
 	connectionSocket.send(response.encode())
 
 def recovery(connectionSocket):
+	"""
+		Executa a lógica da operação "recovery" (reenvio do arquivo requisitado)
+
+		Parameters
+		----------
+		connectionSocket : socket
+			Conexão com o socket do hub
+
+		Returns
+		-------
+		None
+	"""
 	size_filename = struct.unpack('i',connectionSocket.recv(4))[0]
 	filename = connectionSocket.recv(size_filename).decode()
 	print('Filename:', filename)
@@ -79,6 +117,18 @@ def recovery(connectionSocket):
 		connectionSocket.shutdown(SHUT_WR)
 
 def remove(connectionSocket):
+	"""
+		Executa a lógica da operação "remove" (remoção do arquivo)
+
+		Parameters
+		----------
+		connectionSocket : socket
+			Conexão com o socket do hub
+
+		Returns
+		-------
+		None
+	"""
 	size_filename = struct.unpack('i',connectionSocket.recv(4))[0]
 	filename = connectionSocket.recv(size_filename).decode()
 	print('Filename:', filename)
@@ -94,52 +144,54 @@ def remove(connectionSocket):
 	print("Notifying Hub")
 	connectionSocket.send(response.encode())
 
-serverPort = input('Insert Server Port: ') 
-directory_path = os.getcwd()
-new_abs_path = os.path.join(directory_path, 'server_folders')
-new_abs_path = os.path.join(new_abs_path, serverPort)
-if not os.path.exists(new_abs_path):
-	os.mkdir(new_abs_path)
+# Lógica do server
+if __name__ == "__main__":
+	serverPort = input('Insert Server Port: ')
+	directory_path = os.getcwd()
+	new_abs_path = os.path.join(directory_path, 'server_folders')
+	new_abs_path = os.path.join(new_abs_path, serverPort)
+	if not os.path.exists(new_abs_path):
+		os.mkdir(new_abs_path)
 
-t1 = time.time()
-connectedToHub = False
-while time.time()-t1 < 2 and not connectedToHub:
-	connectedToHub = connectToHub()
+	t1 = time.time()
+	connectedToHub = False
+	while time.time()-t1 < 2 and not connectedToHub:
+		connectedToHub = connectToHub()
 
-if not connectedToHub:
-	print("Server didn't connect to Hub.")
-	sys.exit(0)
+	if not connectedToHub:
+		print("Server didn't connect to Hub.")
+		sys.exit(0)
 
-# Now let's start server
-serverPortInt = int(serverPort)
-serverSocket = socket(AF_INET,SOCK_STREAM)
-serverSocket.bind(('',serverPortInt))
-serverSocket.listen(1)
-print()
-print('The server is ready to receive')
+	# Now let's start server
+	serverPortInt = int(serverPort)
+	serverSocket = socket(AF_INET,SOCK_STREAM)
+	serverSocket.bind(('',serverPortInt))
+	serverSocket.listen(1)
+	print()
+	print('The server is ready to receive')
 
 
-while 1:
-	connectionSocket, addr = serverSocket.accept()
-	try:
-		operation = struct.unpack('i',connectionSocket.recv(4))[0]
-		if operation == 1:
-			print('Deposit operation.')
-			deposit(connectionSocket)
-		elif operation == 2:
-			print('Recovery operation.')
-			recovery(connectionSocket)
-		elif operation == 3:
-			print('Remove operation.')
-			remove(connectionSocket)
+	while 1:
+		connectionSocket, addr = serverSocket.accept()
+		try:
+			operation = struct.unpack('i',connectionSocket.recv(4))[0]
+			if operation == 1:
+				print('Deposit operation.')
+				deposit(connectionSocket)
+			elif operation == 2:
+				print('Recovery operation.')
+				recovery(connectionSocket)
+			elif operation == 3:
+				print('Remove operation.')
+				remove(connectionSocket)
 
-		print()
+			print()
 
-		print("Closing connection with Hub.")
-		print()
-		connectionSocket.close()
-	except Exception as e:
-		print('An error ocurred:', e)
-		print("Closing connection with Hub.")
-		print()
-		connectionSocket.close()
+			print("Closing connection with Hub.")
+			print()
+			connectionSocket.close()
+		except Exception as e:
+			print('An error ocurred:', e)
+			print("Closing connection with Hub.")
+			print()
+			connectionSocket.close()

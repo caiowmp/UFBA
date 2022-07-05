@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-br" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tcphub module &mdash; documentação Trabalho Avaliativo MATA59 1.0</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/translations.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Buscar" href="search.html" />
+    <link rel="next" title="tcpserver module" href="tcpserver.html" />
+    <link rel="prev" title="tcpclient module" href="tcpclient.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Trabalho Avaliativo MATA59
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Pesquisar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu de navegação">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">trabalho-avaliativo-mata59</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="tcpclient.html">tcpclient module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">tcphub module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tcpserver.html">tcpserver module</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu de navegação móvel" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Trabalho Avaliativo MATA59</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Navegação da página">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="modules.html">trabalho-avaliativo-mata59</a> &raquo;</li>
+      <li>tcphub module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/tcphub.rst.txt" rel="nofollow"> Ver código-fonte da página</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-tcphub">
+<span id="tcphub-module"></span><h1>tcphub module<a class="headerlink" href="#module-tcphub" title="Link permanente para este cabeçalho"></a></h1>
+<p>Hub da aplicação</p>
+<p>Escuta os servidores e os clients que conectam com ele mesmo e executa as operações enviadas pelo client nos servers.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="tcphub.ListenClient">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tcphub.</span></span><span class="sig-name descname"><span class="pre">ListenClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threadServers</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tcphub.ListenClient" title="Link permanente para esta definição"></a></dt>
+<dd><p>Base: <code class="xref py py-class docutils literal notranslate"><span class="pre">Thread</span></code></p>
+<p>Thread que escuta os clients que irão conectar com o hub.</p>
+<p>…</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tcphub.ListenClient.num">
+<span class="sig-name descname"><span class="pre">num</span></span><a class="headerlink" href="#tcphub.ListenClient.num" title="Link permanente para esta definição"></a></dt>
+<dd><p>Numero da thread</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tcphub.ListenClient.threadServers">
+<span class="sig-name descname"><span class="pre">threadServers</span></span><a class="headerlink" href="#tcphub.ListenClient.threadServers" title="Link permanente para esta definição"></a></dt>
+<dd><p>Objeto referente ao thread dos servidores</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#tcphub.ListenServers" title="tcphub.ListenServers">ListenServers</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcphub.ListenClient.add_files_to_servers">
+<span class="sig-name descname"><span class="pre">add_files_to_servers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clientConnectionSocket</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">servers_with_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size_filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ft_level</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tcphub.ListenClient.add_files_to_servers" title="Link permanente para esta definição"></a></dt>
+<dd><p>Recebe um arquivo do client e adiciona o mesmo nos servidores para atender a tolerância desejada</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parâmetros</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>clientConnectionSocket</strong> (<em>socket</em>) – Conexão com o socket do client</p></li>
+<li><p><strong>servers_with_file</strong> (<em>list of int</em>) – Portas dos servidores conectados com o hub que possuem o arquivo</p></li>
+<li><p><strong>size_filename</strong> (<em>int</em>) – Tamanho em bytes do nome do arquivo a ser adicionado</p></li>
+<li><p><strong>filename</strong> (<em>str</em>) – Nome do arquivo a ser adicionado</p></li>
+<li><p><strong>ft_level</strong> (<em>int</em>) – Nível de tolerância desejado</p></li>
+</ul>
+</dd>
+<dt class="field-even">Retorna</dt>
+<dd class="field-even"><p>Nível de tolerância alcançado</p>
+</dd>
+<dt class="field-odd">Tipo de retorno</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcphub.ListenClient.deposit">
+<span class="sig-name descname"><span class="pre">deposit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clientConnectionSocket</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operation</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tcphub.ListenClient.deposit" title="Link permanente para esta definição"></a></dt>
+<dd><p>Executa a lógica da operação “deposit” executada pelo client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parâmetros</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>clientConnectionSocket</strong> (<em>socket</em>) – Conexão com o socket do client</p></li>
+<li><p><strong>operation</strong> (<em>int</em>) – Operação executada pelo client</p></li>
+</ul>
+</dd>
+<dt class="field-even">Tipo de retorno</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcphub.ListenClient.recover_file">
+<span class="sig-name descname"><span class="pre">recover_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size_filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tcphub.ListenClient.recover_file" title="Link permanente para esta definição"></a></dt>
+<dd><p>Recupera um arquivo dos servidores e salva-o em um arquivo temporario</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parâmetros</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>size_filename</strong> (<em>int</em>) – Tamanho em bytes do nome do arquivo a ser procurado</p></li>
+<li><p><strong>filename</strong> (<em>str</em>) – Nome do arquivo a ser procurado</p></li>
+</ul>
+</dd>
+<dt class="field-even">Retorna</dt>
+<dd class="field-even"><p>Estado da recuperação do arquivo</p>
+</dd>
+<dt class="field-odd">Tipo de retorno</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcphub.ListenClient.recovery">
+<span class="sig-name descname"><span class="pre">recovery</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clientConnectionSocket</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operation</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tcphub.ListenClient.recovery" title="Link permanente para esta definição"></a></dt>
+<dd><p>Executa a lógica da operação “recovery” executada pelo client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parâmetros</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>clientConnectionSocket</strong> (<em>socket</em>) – Conexão com o socket do client</p></li>
+<li><p><strong>operation</strong> (<em>int</em>) – Operação executada pelo client</p></li>
+</ul>
+</dd>
+<dt class="field-even">Tipo de retorno</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcphub.ListenClient.remove_files_from_servers">
+<span class="sig-name descname"><span class="pre">remove_files_from_servers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">servers_with_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size_filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ft_level_remaining</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tcphub.ListenClient.remove_files_from_servers" title="Link permanente para esta definição"></a></dt>
+<dd><p>Remove um determinado arquivo dos servidores conectados para atender a tolerância desejada</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parâmetros</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>servers_with_file</strong> (<em>list of int</em>) – Portas dos servidores conectados com o hub que possuem o arquivo</p></li>
+<li><p><strong>size_filename</strong> (<em>int</em>) – Tamanho em bytes do nome do arquivo a ser removido</p></li>
+<li><p><strong>filename</strong> (<em>str</em>) – Nome do arquivo a ser removido</p></li>
+<li><p><strong>ft_level_remaining</strong> (<em>int</em>) – Nível de tolerância que falta para chegar no nível desejado</p></li>
+</ul>
+</dd>
+<dt class="field-even">Retorna</dt>
+<dd class="field-even"><p>Nível de tolerância que falta para chegar no nível desejado</p>
+</dd>
+<dt class="field-odd">Tipo de retorno</dt>
+<dd class="field-odd"><p>ft_level_remaining</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcphub.ListenClient.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tcphub.ListenClient.run" title="Link permanente para esta definição"></a></dt>
+<dd><p>Executa a lógica da thread</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcphub.ListenClient.servers_with_file">
+<span class="sig-name descname"><span class="pre">servers_with_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size_filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operation</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tcphub.ListenClient.servers_with_file" title="Link permanente para esta definição"></a></dt>
+<dd><p>Se conecta com os servidores disponíveis e verifica quais possuem um determinado arquivo</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parâmetros</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>size_filename</strong> (<em>int</em>) – Tamanho em bytes do nome do arquivo a ser procurado</p></li>
+<li><p><strong>filename</strong> (<em>str</em>) – Nome do arquivo a ser procurado</p></li>
+<li><p><strong>operation</strong> (<em>int</em>) – Operação executada pelo client</p></li>
+</ul>
+</dd>
+<dt class="field-even">Retorna</dt>
+<dd class="field-even"><p>Portas dos servidores conectados com o hub que possuem o arquivo</p>
+</dd>
+<dt class="field-odd">Tipo de retorno</dt>
+<dd class="field-odd"><p>list of int</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tcphub.ListenServers">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tcphub.</span></span><span class="sig-name descname"><span class="pre">ListenServers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tcphub.ListenServers" title="Link permanente para esta definição"></a></dt>
+<dd><p>Base: <code class="xref py py-class docutils literal notranslate"><span class="pre">Thread</span></code></p>
+<p>Thread que escuta os servidores que estão conectando com o hub.</p>
+<p>…</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tcphub.ListenServers.num">
+<span class="sig-name descname"><span class="pre">num</span></span><a class="headerlink" href="#tcphub.ListenServers.num" title="Link permanente para esta definição"></a></dt>
+<dd><p>Numero da thread</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tcphub.ListenServers.portsAvailable">
+<span class="sig-name descname"><span class="pre">portsAvailable</span></span><a class="headerlink" href="#tcphub.ListenServers.portsAvailable" title="Link permanente para esta definição"></a></dt>
+<dd><p>Portas dos servidores conectados com o hub</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list of int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcphub.ListenServers.contactServer">
+<span class="sig-name descname"><span class="pre">contactServer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">serverPort</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tcphub.ListenServers.contactServer" title="Link permanente para esta definição"></a></dt>
+<dd><p>Contacta o servidor e verifica se a conexão com o mesmo ainda é possível</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parâmetros</dt>
+<dd class="field-odd"><p><strong>serverPort</strong> (<em>int</em>) – Porta do servidor que será contatado</p>
+</dd>
+<dt class="field-even">Retorna</dt>
+<dd class="field-even"><p>Estado da conexão com o servidor contatado</p>
+</dd>
+<dt class="field-odd">Tipo de retorno</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcphub.ListenServers.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tcphub.ListenServers.run" title="Link permanente para esta definição"></a></dt>
+<dd><p>Executa a lógica da thread</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
+        <a href="tcpclient.html" class="btn btn-neutral float-left" title="tcpclient module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="tcpserver.html" class="btn btn-neutral float-right" title="tcpserver module" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022.</p>
+  </div>
+
+  Compilado com <a href="https://www.sphinx-doc.org/">Sphinx</a> usando um
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    fornecido por <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
