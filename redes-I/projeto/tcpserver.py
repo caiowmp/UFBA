@@ -34,7 +34,7 @@ def connectToHub():
 
 	clientSocket.send(struct.pack('i', int(serverPort)))
 
-	print('Waiting server response...')
+	print('Waiting Hub response...')
 	response = clientSocket.recv(1024).decode()
 
 	print('From Hub:', response)

@@ -30,7 +30,7 @@ def deposit():
 
 	ft_level = -1
 	while ft_level < 0:
-		ft_level = int(input('Input fault tolerance level [> 0]: '))
+		ft_level = int(input('Input fault tolerance level [>= 0]: '))
 	print('Sending Fault Tolerance Level')
 	clientSocket.send(struct.pack('i',ft_level))
 	print('Fault Tolerance Level sent')
