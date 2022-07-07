@@ -1,0 +1,15 @@
+C:\Users\55719\Documents\UFBA\engenharia-software-I\Prova 3\Questao4\obj\Debug\net6.0\Questao4.csproj.AssemblyReference.cache
+C:\Users\55719\Documents\UFBA\engenharia-software-I\Prova 3\Questao4\obj\Debug\net6.0\Questao4.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\55719\Documents\UFBA\engenharia-software-I\Prova 3\Questao4\obj\Debug\net6.0\Questao4.AssemblyInfoInputs.cache
+C:\Users\55719\Documents\UFBA\engenharia-software-I\Prova 3\Questao4\obj\Debug\net6.0\Questao4.AssemblyInfo.cs
+C:\Users\55719\Documents\UFBA\engenharia-software-I\Prova 3\Questao4\obj\Debug\net6.0\Questao4.csproj.CoreCompileInputs.cache
+C:\Users\55719\Documents\UFBA\engenharia-software-I\Prova 3\Questao4\bin\Debug\net6.0\Questao4.exe
+C:\Users\55719\Documents\UFBA\engenharia-software-I\Prova 3\Questao4\bin\Debug\net6.0\Questao4.deps.json
+C:\Users\55719\Documents\UFBA\engenharia-software-I\Prova 3\Questao4\bin\Debug\net6.0\Questao4.runtimeconfig.json
+C:\Users\55719\Documents\UFBA\engenharia-software-I\Prova 3\Questao4\bin\Debug\net6.0\Questao4.dll
+C:\Users\55719\Documents\UFBA\engenharia-software-I\Prova 3\Questao4\bin\Debug\net6.0\Questao4.pdb
+C:\Users\55719\Documents\UFBA\engenharia-software-I\Prova 3\Questao4\obj\Debug\net6.0\Questao4.dll
+C:\Users\55719\Documents\UFBA\engenharia-software-I\Prova 3\Questao4\obj\Debug\net6.0\refint\Questao4.dll
+C:\Users\55719\Documents\UFBA\engenharia-software-I\Prova 3\Questao4\obj\Debug\net6.0\Questao4.pdb
+C:\Users\55719\Documents\UFBA\engenharia-software-I\Prova 3\Questao4\obj\Debug\net6.0\Questao4.genruntimeconfig.cache
+C:\Users\55719\Documents\UFBA\engenharia-software-I\Prova 3\Questao4\obj\Debug\net6.0\ref\Questao4.dll
