@@ -11,7 +11,7 @@ Forneça um exemplo prático para auxiliar a ilustração (1,0).
 Você tem uma sorveteria que permite que os clientes adicionem coberturas ao sorvete a depender do 
 gosto deles. Na sorveteria, você tem um sistema que informa na tela, a depender dos ingredientes 
 adicionados, a descrição e o preço final do sorvete. O valor do sorvete é fixo: R$5,00. Por enquanto, você 
-só oferece dois tipos de coberturas: calda e passas. A porção de calda custa R$ 1,00 e a de passas, R$ 
+só oferece dois tipos de coberturas: calda e passas. A porção de calda custa RS 1,00 e a de passas, RS 
 1,50. O cliente pode adicionar quantas porções quiser de cada cobertura. Por exemplo, se o cliente 
 adicionar duas porções de calda e uma de passas, o sorvete irá custar R$8,50 (5,00 + 1,00 + 1,00 + 1,50), 
 e a descrição mostrada poderá ser: “Sorvete, calda, calda, passas”, a depender da ordem que o sorvete 
