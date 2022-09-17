@@ -3,6 +3,11 @@ class Aluno:
     self.__matricula = matricula
     self.nome = nome
 
+  def __eq__(self, outro):
+    if isinstance(outro,Aluno) and self.__matricula == outro.__matricula:
+        return True
+    else:
+        return False
 
 ### Testes
 import unittest
