@@ -2,20 +2,22 @@ def maior(lista):
   if len(lista) == 0:
     return 0
   else:
-    lista.sort()
-    lista.reverse()
-    return lista[0]
+    lista1 = []
+    for i in lista:
+      lista1.append(i)
+    lista1.sort()
+    lista1.reverse()
+    return lista1[0]
 
 def media_justa(lista):
-  tam = len(lista)
-  if tam <= 1:
+  tam = len(lista) - 1
+  if tam < 1:
     return 0
   else:
-    lista = lista.remove(maior(lista))
-    print(lista)
     soma = 0
-    for i in range(tam):  
-      soma += int(lista[i])
+    for i in lista:  
+      soma += int(i)
+    soma -= int(maior(lista))
     return soma/tam
 
 ### Testes
@@ -29,6 +31,12 @@ assert media_justa([]) == 0
 assert media_justa([6]) == 0
 assert media_justa([12, 18]) == 12
 assert media_justa([1, 3, 5]) == 2
+
+# a lista não deve ser modificada
+l = [1, 3, 5]
+lcopy = l.copy()
+media_justa(l)
+assert l == lcopy
 
 from unittest.mock import MagicMock
 maior = MagicMock(return_value=5)

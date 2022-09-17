@@ -1,5 +1,5 @@
-def segundo_grau(x, a, b, c):
-  return 0
+def segundo_grau(x, a, b = 0, c = 0):
+  return a*x*x + b*x + c
 
 ### Testes
 assert segundo_grau(2, 1, 1, 1) == 7
