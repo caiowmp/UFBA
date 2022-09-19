@@ -6,13 +6,11 @@ class Retangulo:
 
   @property
   def razao(self):
-    self.razao = self.base / self.altura 
-    return self.razao
+    return self.base / self.altura 
     
   @razao.setter
   def razao(self, valor):
-    self.razao = valor
-    self.altura = self.razao / self.base
+    self.altura = valor / self.base
 
 ### Testes
 r = Retangulo(10, 5)
