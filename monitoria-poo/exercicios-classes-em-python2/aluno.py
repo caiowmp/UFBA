@@ -2,6 +2,15 @@ class Aluno:
   def __init__(self,matricula,nome):
     self.__matricula = matricula
     self.nome = nome
+  
+  @property
+  def matricula (self):
+    return self.__matricula
+
+  @matricula.setter
+  def matricula (self, valor):
+    pass
+
 
   def __eq__(self, outro):
     if isinstance(outro,Aluno) and self.__matricula == outro.__matricula:
