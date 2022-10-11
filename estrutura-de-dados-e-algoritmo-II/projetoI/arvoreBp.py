@@ -8,12 +8,13 @@ class ArvoreBp:
         self.MIN_INDICES_NO = GRAU_MINIMO_INDICE - 1 
         self.MAX_REG_NO = FATOR_CONJSEQ * 2 - 1
         self.MIN_REG_NO = FATOR_CONJSEQ - 1
-        Arquivo.criaConjuntoSequencia()
-        Arquivo.criaIndices()
+        try:
+            self.conjuntoSequencia = Arquivo.leConjuntoSequencia()
+        except:
+            Arquivo.criaConjuntoSequencia()
         
-    def insereRegistro (self, registro):
-        if isinstance (registro, Registro):
-            Arquivo.insereDadosConjuntoSequencia(registro)
+
+                    
 
     def consultaRegistro (self, chave):
         pass
