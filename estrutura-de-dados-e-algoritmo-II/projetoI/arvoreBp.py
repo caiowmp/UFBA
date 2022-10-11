@@ -13,7 +13,13 @@ class ArvoreBp:
         except:
             Arquivo.criaConjuntoSequencia()
         
-
+    def insereRegistro (self, registro):
+        if isinstance (registro, Registro):
+            self.conjuntoSequencia = Arquivo.leConjuntoSequencia()
+            for reg in self.conjuntoSequencia:
+                if int(reg[0]) == registro.chave:
+                    print('chave ja existente:', str(registro.chave))
+                    return 
                     
 
     def consultaRegistro (self, chave):
