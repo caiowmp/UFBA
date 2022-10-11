@@ -40,7 +40,13 @@ class Arquivo:
 
     @classmethod
     def leConjuntoSequencia (cls):
-        pass
+        conjuntoSequencia = []
+        with open('conjuntoSequencia') as arquivo:
+            for linha in arquivo:
+                linha = linha.split(' ')
+                conjuntoSequencia.append(linha)
+                
+        return conjuntoSequencia
 
     @classmethod
     def leIndices (cls):
