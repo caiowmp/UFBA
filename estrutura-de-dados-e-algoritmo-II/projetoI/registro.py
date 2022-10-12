@@ -6,4 +6,4 @@ class Registro:
         self.idade = idade
 
     def __repr__ (self):
-        return str(self.chave) + " " + str(self.nome) + " " + str(self.idade) + '\n'
+        return str(self.chave) + " " + str(self.nome) + " " + str(self.idade) + ' \n'
