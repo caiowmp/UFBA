@@ -7,7 +7,7 @@ GRAU_MINIMO_INDICE = 3
 FATOR_CONJSEQ = 2
 
 #cria a arvore b+
-arvore = ArvoreBp(GRAU_MINIMO_INDICE,FATOR_CONJSEQ)
+arvore = ArvoreBp(GRAU_MINIMO_INDICE, FATOR_CONJSEQ)
 
 while True:
 
@@ -18,8 +18,7 @@ while True:
         chave = int(input())
         nome = input()
         idade = int(input())
-        registro = Registro(chave, nome, idade)
-        arvore.insereRegistro(registro)
+        arvore.insereRegistro(Registro(chave, nome, idade))
     #consulta registro
     elif operacao == 'c':
         chave = int(input())
