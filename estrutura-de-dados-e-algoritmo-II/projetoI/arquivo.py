@@ -14,10 +14,7 @@ class Arquivo:
         file.close()
 
     @classmethod
-    def insereDadosConjuntoSequencia (cls, registro):
-        file = open('projetoI\\conjuntoSequencia','r')
-        conteudo = file.readlines()
-        conteudo.append(repr(registro))
+    def insereDadosConjuntoSequencia (cls, conteudo):
 
         file = open('projetoI\\conjuntoSequencia','w')
         file.writelines(conteudo)
