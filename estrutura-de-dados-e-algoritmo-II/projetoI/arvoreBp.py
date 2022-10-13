@@ -10,6 +10,7 @@ class ArvoreBp:
         self.MIN_INDICES = GRAU_MINIMO_INDICE - 1 
         self.MAX_REG = FATOR_CONJSEQ * 2 - 1
         self.MIN_REG = FATOR_CONJSEQ - 1
+        self.conjuntoSequencia = []
         try:
             self.conjuntoSequencia = Arquivo.leConjuntoSequencia()
         except:
@@ -49,12 +50,15 @@ class ArvoreBp:
                     #verifica se o anterior é o último e insere no final
                     if idx + 1 == len(self.conjuntoSequencia):
                         self.conjuntoSequencia.append(repr(registro).split(' '))
+                        print('insercao com sucesso:', registro.chave)
                     #insere após o anterior
                     else:
                         self.conjuntoSequencia.insert(idx + 1, repr(registro).split(' '))
+                        print('insercao com sucesso:', registro.chave)
                 #insere no início
                 else:
                     self.conjuntoSequencia.insert(0, repr(registro).split(' '))
+                    print('insercao com sucesso:', registro.chave)
 
             #ecreve o conteúdo em uma variável
             conteudo = []
