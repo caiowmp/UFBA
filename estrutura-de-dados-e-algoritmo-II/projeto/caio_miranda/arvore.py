@@ -52,7 +52,7 @@ class Arvore:
             pai = filho
 
             for i, chave in enumerate(pai.chaves):
-                if nova_chave < chave:
+                if nova_chave <= chave:
                     filho = pai.ponteiros[i]
                     break
                 elif i + 1 == len(pai.chaves):
@@ -66,7 +66,7 @@ class Arvore:
             self.dividir(pai, filho)
             while not filho.eh_folha:
                 for i, chave in enumerate(filho.chaves):
-                    if nova_chave < chave:
+                    if nova_chave <= chave:
                         filho = filho.ponteiros[i]
                         break
                     elif i + 1 == len(filho.chaves):
