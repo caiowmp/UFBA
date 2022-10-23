@@ -1,9 +1,41 @@
 
 
 #Trabalho feito usando a versão 3.10.7
-
 from arvore import Arvore
 from node import Response
+
+def criarArquivo():
+    try:        
+        lerArquivo()
+    except:
+        arquivo = open("arquivo.bin","wb")
+        arquivo.close()
+
+def lerArquivo():
+    with open("arquivo.bin") as arquivo:
+        for linha in arquivo:
+            chave = linha.split(' ')[0]
+            if chave[0] == 'i':
+                chave = chave[1:]
+                nome = linha.split(' ')[1]
+                idade = linha.split(' ')[2]
+                inserirA(chave,nome,idade)
+            else:
+                chave = chave[1:]
+                removerA(chave)
+                continue
+
+def escreverArquivo(chave, nome, idade):
+    arquivo = open("arquivo.bin","ab+")
+    conteudo = 'i' + str(chave) + ' ' + nome + ' ' + idade + '\n'
+    arquivo.write(conteudo.encode('utf-8'))
+    arquivo.close()
+
+def removerArquivo(chave):
+    arquivo = open("arquivo.bin","ab+")
+    conteudo = 'r' + str(chave) + '\n'
+    arquivo.write(conteudo.encode('utf-8'))
+    arquivo.close()
 
 GRAU_MINIMO_INDICE = 3
 FATOR_CONJSEQ = 2
@@ -20,6 +52,7 @@ def inserir():
     dado = {"nome": nome, "idade": int(idade)}
     if arvore.inserir(chave, dado):
         print("insercao com sucesso:", chave)
+        escreverArquivo(chave, nome, idade)
         return
     print("chave ja existente:", chave)
 
@@ -35,12 +68,22 @@ def consultar():
     else:
         print("chave nao encontrada:", entrada)
 
+def inserirA(chave, nome, idade):
+    chave, nome, idade
+    chave = int(chave)
+    dado = {"nome": nome, "idade": int(idade)}
+    if arvore.inserir(chave, dado):
+        return
+
+def removerA(chave):
+    arvore.remover(int(chave))
 
 def remover():
     entrada = int(input())
     resultado = arvore.remover(entrada)
     if resultado == Response.SUCESSO:
         print("chave removida com sucesso:", entrada)
+        removerArquivo(entrada)
     else:
         print("chave nao encontrada:", entrada)
 
@@ -58,7 +101,6 @@ def folhas():
         for chave in chaves:
             print(chave)
 
-
 comandos = {
     "i": inserir,
     "c": consultar,
@@ -67,22 +109,9 @@ comandos = {
     "r": remover,
     "e": exit,
 }
-#'''
-dado = {"nome": "caio", "idade": 21}
 
-chaves = [50, 30, 70,80,90,85,100,20,10,75,72,110,40]
-print("\n\n Teste de inserção", chaves)
-
-arvore = Arvore(3, 2)
-
-for chave in chaves:
-    print(chave)
-    arvore.inserir(chave, dado)
-    arvore.imprimir()
-    print()
-#'''
+criarArquivo()
 while(True):
     entrada = input()
     if entrada in comandos:
         comandos[entrada]()
-
