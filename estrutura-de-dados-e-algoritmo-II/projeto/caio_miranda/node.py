@@ -68,7 +68,7 @@ class Node:
         for i, c in enumerate(self.chaves):
             if c > chave:
                 return self.ponteiros[i].buscar(chave)
-            elif i + 1 == len(self.chaves) == len(self.ponteiros):
+            elif i + 1 == len(self.chaves) == len(self.ponteiros) - 1:
                 return self.ponteiros[i+1].buscar(chave)
         return None
 
