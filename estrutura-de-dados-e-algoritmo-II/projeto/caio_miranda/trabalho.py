@@ -1,3 +1,7 @@
+
+
+#Trabalho feito usando a versão 3.10.7
+
 from arvore import Arvore
 from node import Response
 
@@ -43,12 +47,16 @@ def remover():
 
 def imprimir():
     arvore.imprimir()
+    print()
 
 
 def folhas():
     chaves = arvore.pegar_folhas()
-    for chave in chaves:
-        print(chave)
+    if len(chaves) == 0:
+        print('árvore vazia')
+    else:
+        for chave in chaves:
+            print(chave)
 
 
 comandos = {
@@ -59,8 +67,8 @@ comandos = {
     "r": remover,
     "e": exit,
 }
-'''
-dado = {"nome": "jonatas", "idade": 24}
+#'''
+dado = {"nome": "caio", "idade": 21}
 
 chaves = [50, 30, 70,80,90,85,100,20,10,75,72,110,40]
 print("\n\n Teste de inserção", chaves)
@@ -72,7 +80,7 @@ for chave in chaves:
     arvore.inserir(chave, dado)
     arvore.imprimir()
     print()
-'''
+#'''
 while(True):
     entrada = input()
     if entrada in comandos:
