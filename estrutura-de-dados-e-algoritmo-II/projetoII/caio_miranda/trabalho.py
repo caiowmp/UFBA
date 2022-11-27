@@ -94,7 +94,15 @@ def imprimePalavrasEBinarioCrescente():
         return
     else:
         for i in palavras:
-            print(i, Arquivo.retornaPalavraEmBinario(i))
+            print(i, '', end ='')
+            contBits = 0
+            for j in Arquivo.retornaPalavraEmBinario(i):
+                contBits += 1
+                if contBits % 7 == 0:
+                    print(j, '', end='')
+                else:
+                    print(j, end='')
+            print()
 
 
 arvore = Arvore()
