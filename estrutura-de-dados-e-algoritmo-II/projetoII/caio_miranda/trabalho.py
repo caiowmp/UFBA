@@ -1,28 +1,107 @@
-def insereTraducao(palavra, morfologia, traducoes):
-    pass
+from dado import Dado
+from arquivo import Arquivo
+from arvore import Arvore
+
+def insereTraducao(dado: Dado, contadorDeFolhas: int):
+    if Arquivo.verficaSePalavraJaExiste(dado.palavra):
+        print("palavra ja existente:", dado.palavra)
+        return
+    else:
+        arvore.insereTraducao(dado, contadorDeFolhas, arvore.noRaiz)
+        print('palavra inserida no dicionario: ' + dado.palavra) 
+        return
+
+def insereTraducaoInicio(dado: Dado, contadorDeFolhas: int):
+    arvore.insereTraducaoInicio(dado, contadorDeFolhas, arvore.noRaiz)
 
 def listaPalavrasCrescente():
-    pass
+    palavras = Arquivo.retornaPalavrasOrdemCrescente() 
+    if palavras == '':
+        return
+    else:
+        for i in palavras:
+            print(i)
 
 def listaPalavrasDecrescente():
-    pass
+    palavras = Arquivo.retornaPalavrasOrdemDecrescente() 
+    if palavras == '':
+        return
+    else:
+        for i in palavras:
+            print(i)
 
-def listaTraducoes(palavra):
-    pass
+def listaTraducoes(palavra: str):
+    traducoes = arvore.retornaTraducoesPalavra(palavra)
+    if traducoes == '':
+        return
+    else:
+        traducoes.remove('\n')
+        for i in traducoes:
+            print(i)  
 
-def listaPalavrasClasse(morfologia, ordem):
-    pass
+def listaPalavrasClasse(morfologia : str, ordem: str):
+    if ordem == 'c':
+        palavras = Arquivo.retornaPalavrasOrdemCrescenteMorfologia(morfologia) 
+        if palavras == '':
+            return
+        else:
+            for i in palavras:
+                print(i)
+    else:
+        palavras = Arquivo.retornaPalavrasOrdemDecrescenteMorfologia(morfologia) 
+        if palavras == '':
+            return
+        else:
+            for i in palavras:
+                print(i)
 
-def consultaClasse(palavra):
-    pass
+def consultaClasse(palavra: str):
+    if Arquivo.verficaSePalavraJaExiste(palavra):
+        morfologia = arvore.retornaMorfologiaPalavra(palavra)
+        print('classe da palavra: ', palavra,':',end='',sep='')
+        if morfologia == 's':
+            print(' substantivo')
+        elif morfologia == 'v':
+            print(' verbo')
+        else:
+            print(' adjetivo')
+    else:
+        print('palavra inexistente no dicionario:', palavra)
 
-def removePalavra(palavra):
+def removePalavra(palavra: str):
     pass
 
 def imprimeArvore():
-    pass
+    arvore.printaArvore(arvore.noRaiz)
 
+    imprimePalavrasEBinarioCrescente()
+    
+def carregaArvore():
+    arvoreAux = Arvore()
+
+    dados = Arquivo.leArquivo()
+
+    aux = 0
+    for i in dados:
+        insereTraducaoInicio(i, aux)
+        aux += 1
+
+    return arvoreAux
+
+def imprimePalavrasEBinarioCrescente():
+    palavras = Arquivo.retornaPalavrasOrdemCrescente() 
+    if palavras == '':
+        return
+    else:
+        for i in palavras:
+            print(i, Arquivo.retornaPalavraEmBinario(i))
+
+
+arvore = Arvore()
+arvore = carregaArvore()
 while True:
+    
+    contadorDeFolhas = 0
     comando = input()
 
     if comando == 'e': # término da sequencia de comando
@@ -34,7 +113,8 @@ while True:
         traducoes = []
         for i in range(nTraducoes):
             traducoes.append(input())
-        insereTraducao(palavra, morfologia, traducoes)
+        insereTraducao(Dado(palavra, morfologia, traducoes), contadorDeFolhas)
+        contadorDeFolhas += 1
     elif comando == 'l': # lista palavra no idioma origem
         ordem = input()
         if ordem == 'c':    # em ordem crescente
