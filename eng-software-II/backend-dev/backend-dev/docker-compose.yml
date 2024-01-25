@@ -1,0 +1,51 @@
+version: "3"
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: db
+    environment:
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "pd_database"
+    expose:
+      - 5432
+    ports:
+      - "5432:5432"
+    networks:
+      - backend
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8282:8081
+    networks:
+      - backend
+
+  api:
+    image: node:18-alpine
+    command: sh -c "npm run dev"
+    working_dir: /app
+    volumes:
+      - ./:/app
+    depends_on:
+      - db
+    ports:
+      - ${SERVER_PORT:-4000}:${SERVER_PORT:-4000}
+    networks:
+      - backend
+
+  docs:
+    image: swaggerapi/swagger-ui
+    ports:
+      - "4500:8080"
+    container_name: docs
+    volumes:
+      - ./docs:/usr/share/nginx/html/swagger
+    environment:
+      API_URL: swagger/swagger.yaml
+    networks:
+      - backend
+
+networks:
+  backend:
